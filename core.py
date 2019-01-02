@@ -10,6 +10,7 @@ import typing
 import importlib.util
 import sys
 import traceback
+from utils.paginator import HelpPaginator, CannotPaginate
 
 #Logging setup
 if os.path.exists('logs/discord.log'):
@@ -27,8 +28,29 @@ with open("settings.json") as f:
     f.close()
 
 bot = commands.Bot(command_prefix=r'exe!', description="Discord.exe", case_insensitive=True)
+bot.remove_command('help')
 bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
+
+#Copied from https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/utils/paginator.py <3
+@bot.command(name='help')
+async def _help(ctx, *, command: str = None):
+    """Shows help about a command or the bot"""
+    try:
+        if command is None:
+            p = await HelpPaginator.from_bot(ctx)
+        else:
+            entity = bot.get_cog(command) or bot.get_command(command)
+            if entity is None:
+                clean = command.replace('@', '@\u200b')
+                return await ctx.send(f'Command or category "{clean}" not found.')
+            elif isinstance(entity, commands.Command):
+                p = await HelpPaginator.from_command(ctx, entity)
+            else:
+                p = await HelpPaginator.from_cog(ctx, entity)
+        await p.paginate()
+    except Exception as e:
+        await ctx.send(e)
 
 @bot.event
 async def on_ready():
