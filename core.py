@@ -28,6 +28,7 @@ with open("settings.json") as f:
 
 bot = commands.Bot(command_prefix=r'exe!', description="Discord.exe", case_insensitive=True)
 bot.settings = settings
+bot.start_time = datetime.datetime.utcnow()
 
 @bot.event
 async def on_ready():
