@@ -43,7 +43,7 @@ class special:
             with open('data/emote_list.json', 'w') as f:
                 json.dump(self.list, f)
                 f.close()
-            await asyncio.sleep(300)
+            await asyncio.sleep(1800)
 
 def setup(bot):
     bot.add_cog(special(bot))
