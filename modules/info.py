@@ -36,7 +36,7 @@ class info:
         if not user:
             user = ctx.author
         joined = humanize.naturaldate(user.joined_at)
-        joined_dis = humanize.naturaldate(user.create_at)
+        joined_dis = humanize.naturaldate(user.created_at)
         top_role = user.top_role.name
         top_role_pos = (ctx.message.guild.roles[::-1].index(user.top_role))+1
         e = discord.Embed()
