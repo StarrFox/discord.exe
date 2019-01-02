@@ -10,6 +10,7 @@ class special:
         self.bot = bot
         self.list = json.load(open("data/emote_list.json"))
         self.save_task = self.bot.loop.create_task(self.save())
+        self.lastview = {}
 
     @commands.group(aliases=['we'], invoke_without_command=True)
     async def wallemotes(self, ctx):
@@ -34,9 +35,16 @@ class special:
         if not name in self.list:
             await ctx.send("Not found")
             return
+        if ctx.guild.id in self.lastview:
+            for m in self.lastview[ctx.guild.id]:
+                await m.delete()
+            self.lastview.pop(ctx.guild.id)
+        self.lastview[ctx.guild.id] = []
         msg = f"**{name}:**\n{self.list[name]['invite']}"
-        await ctx.send(msg)
-        await ctx.send(f"{self.list[name]['emotes']}")
+        m1 = await ctx.send(msg)
+        m2 await ctx.send(f"{self.list[name]['emotes']}")
+        self.lastview.append(m1)
+        self.lastview.append(m2)
 
     async def save(self):
         while True:
