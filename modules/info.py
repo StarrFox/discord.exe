@@ -44,7 +44,7 @@ class info:
         e.set_thumbnail(url=user.avatar_url)
         e.add_field(name="Joined guild:", value=joined)
         e.add_field(name="Joined discord:", value=joined_dis)
-        e.add_field(name="Status:", value=f"Web: {user.web_stats}\nDesktop: {user.desktop_status}\nMobile: {user.mobile_status}")
+        e.add_field(name="Status:", value=f"Web: {user.web_status}\nDesktop: {user.desktop_status}\nMobile: {user.mobile_status}")
         e.add_field(name="Top role:", value=f"{top_role} in pos #{top_role_pos}")
         e.add_field(name=f"{len(user.roles)} roles:", value=f"{[r.mention for r in user.roles]}")
         await ctx.send(embed=e)
