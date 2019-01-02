@@ -43,8 +43,8 @@ class special:
         msg = f"**{name}:**\n{self.list[name]['invite']}"
         m1 = await ctx.send(msg)
         m2 = await ctx.send(f"{self.list[name]['emotes']}")
-        self.lastview.append(m1)
-        self.lastview.append(m2)
+        self.lastview[ctx.guild.id].append(m1)
+        self.lastview[ctx.guild.id].append(m2)
 
     async def save(self):
         while True:
