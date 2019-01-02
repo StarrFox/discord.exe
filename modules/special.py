@@ -42,7 +42,7 @@ class special:
         self.lastview[ctx.guild.id] = []
         msg = f"**{name}:**\n{self.list[name]['invite']}"
         m1 = await ctx.send(msg)
-        m2 await ctx.send(f"{self.list[name]['emotes']}")
+        m2 = await ctx.send(f"{self.list[name]['emotes']}")
         self.lastview.append(m1)
         self.lastview.append(m2)
 
