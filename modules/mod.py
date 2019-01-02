@@ -89,7 +89,7 @@ class mod:
             await channel.delete_messages(messages)
 
     @commands.command()
-    @checker.serverowner_or_permissions(ban_members=True)
+    @checks.serverowner_or_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member):
         """Ban a member from the server"""
         guild = ctx.message.guild
@@ -113,7 +113,7 @@ class mod:
             await ctx.send(embed=e)
     
     @commands.command()
-    @checker.serverowner_or_permissions(administrator=True)
+    @checks.serverowner_or_permissions(administrator=True)
     async def unban(self, ctx, user: BannedMember):
         """Unban a user from the server"""
         guild = ctx.message.guild
