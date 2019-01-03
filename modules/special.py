@@ -40,8 +40,11 @@ class special:
                 await m.delete()
             self.lastview.pop(ctx.message.channel.id)
         self.lastview[ctx.message.channel.id] = []
-        e = discord.Embed(title=name, description=self.list[name]['invite'], color=discord.Color.blue())
+        invite = await self.bot.get_invite(self.list[name]['invite'])
+        guild = invite.guild
+        e = discord.Embed(description=self.list[name]['invite'], color=discord.Color.blue())
         e.add_field(name="\u200b", value=self.list[name]['emotes'])
+        e.set_author(name=name, icon_url=guild.icon_url)
         m1 = await ctx.send(embed=e)
         self.lastview[ctx.message.channel.id].append(m1)
 
