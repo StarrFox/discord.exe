@@ -4,6 +4,7 @@ import asyncio
 import traceback
 import aiohttp
 from os import system
+from utils import checks
 
 class owner:
 
@@ -37,6 +38,12 @@ class owner:
         await ctx.send("Restarting discord.exe....")
         system("start restart.bat")
         await self.bot.logout()
+
+    @bot.command()
+    @checks.is_owner()
+    async def dm(self, ctx, user: discord.User, *, msg: str):
+        await user.send(msg)
+        await ctx.send("message sent")
 
 def setup(bot):
     bot.add_cog(owner(bot))
