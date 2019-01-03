@@ -39,7 +39,7 @@ class owner:
         system("start restart.bat")
         await self.bot.logout()
 
-    @bot.command()
+    @commands.command()
     @checks.is_owner()
     async def dm(self, ctx, user: discord.User, *, msg: str):
         await user.send(msg)
