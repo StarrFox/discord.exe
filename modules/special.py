@@ -42,8 +42,8 @@ class special:
         self.lastview[ctx.message.channel.id] = []
         invite = await self.bot.get_invite(self.list[name]['invite'])
         guild = invite.guild
-        e = discord.Embed(description=self.list[name]['invite'], color=discord.Color.blue())
-        e.add_field(name="\u200b", value=self.list[name]['emotes'])
+        emojis = self.list[name]['emotes']
+        e = discord.Embed(description=f"{self.list[name]['invite']}\n\n\n{emojis}", color=discord.Color.blue())
         e.set_author(name=name, icon_url=guild.icon_url)
         m1 = await ctx.send(embed=e)
         self.lastview[ctx.message.channel.id].append(m1)
