@@ -46,9 +46,8 @@ class info:
         e.add_field(name="Joined discord:", value=joined_dis)
         e.add_field(name="Status:", value=f"Web: {user.web_status}\nDesktop: {user.desktop_status}\nMobile: {user.mobile_status}")
         e.add_field(name="Top role:", value=f"{top_role} in pos #{top_role_pos}")
-        e.add_field(name=f"{len(user.roles)} roles:", value=", ".join([r.mention for r in user.roles]))
+        e.add_field(name=f"{len(user.roles)-1} roles:", value=", ".join([r.mention for r in user.roles if not ctx.guild.default_role]))
         await ctx.send(embed=e)
-
 
 def setup(bot):
     bot.add_cog(info(bot))

@@ -12,7 +12,7 @@ class giveaways:
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def start(self, ctx, channel: discord.TextChannel, time: int, winners: int, *, prize: str):
-        await ctx.send("Sending request to giveaway process")
+        await ctx.send("Starting")
         await self.giveaway_process(channel, time, winners, prize)
 
     @commands.command()
@@ -58,7 +58,7 @@ class giveaways:
         except:
             await ctx.send("Timmed out, aborting setup")
             return
-        await ctx.send("Sending request to giveaway process")
+        await ctx.send("Starting")
         winnermsg = int(winnermsg.content)
         prizemsg = prizemsg.content
         chanmsg = chanmsg.channel_mentions[0]

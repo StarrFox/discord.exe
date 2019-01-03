@@ -96,10 +96,6 @@ class mod:
         mod = ctx.message.author
         e = discord.Embed()
         guildid = str(guild.id)
-        if guildid in self.userwhitelist:
-            if user.id in self.userwhitelist[guildid]:
-                await ctx.send("Cannot ban users in whitelist")
-                return
         if user != mod and mod.top_role.position > user.top_role.position:
             try:
                 await guild.ban(user)
