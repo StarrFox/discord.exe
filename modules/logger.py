@@ -14,6 +14,5 @@ class logger:
         channel = self.bot.get_channel(527440788934754314)
         await channel.send(f"name:{guild.name} id:{guild.id} members:{guild.member_count} owner:{str(guild.owner)}")
 
-
 def setup(bot):
     bot.add_cog(logger(bot))

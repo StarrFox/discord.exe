@@ -29,22 +29,22 @@ class special:
         await ctx.send(f"Added {name} to wall emote lists")
 
     @wallemotes.command()
-    @commands.cooldown(rate=1, per=10, type=commands.BucketType.guild)
+    @commands.cooldown(rate=1, per=5, type=commands.BucketType.guild)
     async def view(self, ctx, *, name: str):
         name = name.lower()
         if not name in self.list:
             await ctx.send("Not found")
             return
-        if ctx.guild.id in self.lastview:
-            for m in self.lastview[ctx.guild.id]:
+        if ctx.message.channel.id in self.lastview:
+            for m in self.lastview[ctx.message.channel.id]:
                 await m.delete()
-            self.lastview.pop(ctx.guild.id)
-        self.lastview[ctx.guild.id] = []
+            self.lastview.pop(ctx.message.channel.id)
+        self.lastview[ctx.message.channel.id] = []
         msg = f"**{name}:**\n{self.list[name]['invite']}"
         m1 = await ctx.send(msg)
         m2 = await ctx.send(f"{self.list[name]['emotes']}")
-        self.lastview[ctx.guild.id].append(m1)
-        self.lastview[ctx.guild.id].append(m2)
+        self.lastview[ctx.message.channel.id].append(m1)
+        self.lastview[ctx.message.channel.id].append(m2)
 
     async def save(self):
         while True:
