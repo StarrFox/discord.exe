@@ -40,11 +40,10 @@ class special:
                 await m.delete()
             self.lastview.pop(ctx.message.channel.id)
         self.lastview[ctx.message.channel.id] = []
-        msg = f"**{name}:**\n{self.list[name]['invite']}"
-        m1 = await ctx.send(msg)
-        m2 = await ctx.send(f"{self.list[name]['emotes']}")
+        e = discord.Embed(title=name, description=self.list[name]['invite'], color=discord.Color.blue())
+        e.add_field(name="\u200b", value=self.list[name]['emotes'])
+        m1 = await ctx.send(embed=e)
         self.lastview[ctx.message.channel.id].append(m1)
-        self.lastview[ctx.message.channel.id].append(m2)
 
     async def save(self):
         while True:
