@@ -11,6 +11,7 @@ import importlib.util
 import sys
 import traceback
 from utils.paginator import HelpPaginator, CannotPaginate
+import asyncpg
 
 #Logging setup
 if os.path.exists('logs/discord.log'):
@@ -27,10 +28,18 @@ with open("settings.json") as f:
     settings = json.load(f)
     f.close()
 
-bot = commands.Bot(command_prefix=r'exe!', description="Discord.exe", case_insensitive=True)
+async def get_prefix(bot, message):
+    if message.guild is None:
+        return ""
+    else:
+        return commands.when_mentioned_or(*bot.prefixes[message.guild.id])(bot, message)
+
+bot = commands.Bot(command_prefix='exe!', description="Discord.exe", case_insensitive=True)
 bot.remove_command('help')
 bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
+bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
+bot.prefixes = {}
 
 #Copied from https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/utils/paginator.py <3
 @bot.command(name='help')

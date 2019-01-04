@@ -39,7 +39,7 @@ class info:
         joined_dis = humanize.naturaldate(user.created_at)
         top_role = user.top_role.name
         top_role_pos = (ctx.message.guild.roles[::-1].index(user.top_role))+1
-        e = discord.Embed()
+        e = discord.Embed(color=user.color)
         e.add_field(name="Name#discrim", value=str(user))
         e.add_field(name="ID:", value=user.id)
         e.set_thumbnail(url=user.avatar_url)
@@ -48,6 +48,27 @@ class info:
         e.add_field(name="Status:", value=f"Web: {user.web_status}\nDesktop: {user.desktop_status}\nMobile: {user.mobile_status}")
         e.add_field(name="Top role:", value=f"{top_role} in pos #{top_role_pos}")
         e.add_field(name=f"{len(user.roles)} roles:", value=", ".join([r.mention for r in user.roles]))
+        await ctx.send(embed=e)
+
+    @commands.group(aliases=['si', 'gi', 'guildinfo'])
+    async def serverinfo(self, ctx):
+        """Get info on a server"""
+        guild = ctx.guild
+        bots = 0
+        humans = 0
+        for member in guild.members:
+            if member.bot:
+                bots += 1
+            else:
+                humans += 1
+        e = discord.Embed(color=discord.Color.purple())
+        e.set_thumbnail(url=guild.icon_url)
+        e.add_field(name="ID:", value=guild.id)
+        e.add_field(name="Owner:", value=str(guild.owner))
+        e.add_field(name="Members:", value=f"Human: {humans}\nBots: {bots}\nTotal: {humans + bots}")
+        e.add_field(name="Role count:", value=len(guild.roles))
+        e.add_field(name="Created:", value=humanize.naturaltime(guild.created_at))
+        e.add_field(name="Channels:", value=f"Categories: {len(guild.categories)}\nText: {len(guild.text_channels)}\nVoice: {guild.voice_channels}")
         await ctx.send(embed=e)
 
 def setup(bot):
