@@ -38,7 +38,6 @@ bot = commands.Bot(command_prefix='exe!', description="Discord.exe", case_insens
 bot.remove_command('help')
 bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
-bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
 bot.prefixes = {}
 
 #Copied from https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/utils/paginator.py <3
@@ -68,6 +67,8 @@ async def on_ready():
     print(f"User: {bot.user}")
     print(f"ID: {bot.user.id}")
     print(f"With {len(bot.commands)} commands loaded")
+    print("Connecting to Database")
+    await connect_db()
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -113,6 +114,9 @@ async def load_mods():
         with open(f"logs/{filename}.log", 'w+') as f:
             f.write(failedmsg)
             f.close()
+
+async def connect_db():
+    bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
 
 async def presenceupdate():
     await bot.wait_until_ready()
