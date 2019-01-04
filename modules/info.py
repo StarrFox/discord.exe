@@ -40,13 +40,14 @@ class info:
         top_role = user.top_role.name
         top_role_pos = (ctx.message.guild.roles[::-1].index(user.top_role))+1
         e = discord.Embed()
-        e.add_field(name="Name|id", value=f"{user.name}|{user.id}")
+        e.add_field(name="Name#discrim", value=str(user))
+        e.add_field(name="ID:", value=user.id)
         e.set_thumbnail(url=user.avatar_url)
         e.add_field(name="Joined guild:", value=joined)
         e.add_field(name="Joined discord:", value=joined_dis)
         e.add_field(name="Status:", value=f"Web: {user.web_status}\nDesktop: {user.desktop_status}\nMobile: {user.mobile_status}")
         e.add_field(name="Top role:", value=f"{top_role} in pos #{top_role_pos}")
-        e.add_field(name=f"{len(user.roles)-1} roles:", value=", ".join([r.mention for r in user.roles]))
+        e.add_field(name=f"{len(user.roles)} roles:", value=", ".join([r.mention for r in user.roles]))
         await ctx.send(embed=e)
 
 def setup(bot):
