@@ -129,12 +129,8 @@ async def connect_db():
     print("Database and prefixes loaded")
 
 async def disconnect_db():
-    set_list = []
-    for guild_id, prefix_list in bot.prefixes.items():
-        temp_set = (guild_id, prefix_list)
-        set_list.append(temp_set)
     await bot.db.execute("DELETE FROM prefixes;")
-    await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", set_list)
+    await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", bot.prefixes.items())
     print("Database and prefixes unloaded")
 
 async def presenceupdate():
