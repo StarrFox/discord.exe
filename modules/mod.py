@@ -38,7 +38,7 @@ class mod:
         """Add a prefix for this server"""
         guild = ctx.guild
         if len(prefix) > 20:
-            return await ctx.send("Prefix too long")
+            return await ctx.send("Prefix too long (max is 20 chars)")
         if guild.id in self.bot.prefixes:
             if len(self.bot.prefixes[guild.id]) >= 10:
                 return await ctx.send('Can only have 10 prefixes, remove one to add this one')

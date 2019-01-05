@@ -92,6 +92,10 @@ async def on_guild_join(guild):
     bot.prefixes[guild.id] = []
     bot.prefixes[guild.id].append('exe!')
 
+@bot.event
+async def on_guild_remove(guild):
+    bot.prefixes.pop(guild.id)
+
 async def load_mods():
     bot.load_extension('jishaku')
     found = glob.glob('modules/*.py')

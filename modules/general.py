@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import async_cse
 import typing
+from utils import checks
 
 class general:
 
@@ -131,6 +132,14 @@ class general:
         e.set_image(url=pages[page])
         await msg.edit(embed=e)
         await self.gimage(ctx, pages, msg, page)
+
+    @commands.command(aliases=['msg'])
+    @checks.serverowner_or_permissions(administrator=True)
+    async def quote(self, ctx, user: discord.Member, *, message: str):
+        """Send a message as someone else"""
+        hook = await ctx.channel.create_webhook(name=user.display_name)
+        await hook.send(message, avatar_url=user.avatar_url)
+        await hook.delete()
 
 def setup(bot):
     bot.add_cog(general(bot))
