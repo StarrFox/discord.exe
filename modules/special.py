@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import json
 from discord.ext.commands.cooldowns import BucketType
+from utils import checks
 
 class special:
 
@@ -20,7 +21,7 @@ class special:
         await ctx.send(f"```Use exe!wallemotes view <name>\n{msg}```")
 
     @wallemotes.command()
-    @commands.is_owner()
+    @checks.emojiadmin()
     async def add(self, ctx, name: str, invite: str, *, emotes: str):
         name = name.lower()
         self.list[name] = {}

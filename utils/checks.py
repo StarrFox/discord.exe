@@ -67,3 +67,15 @@ def serverowner():
 
         return is_owner_check(ctx)
     return commands.check(predicate)
+
+def emojiadmin():
+    def predicate(ctx):
+        if ctx.guild is None:
+            return False
+        emoji_admins = [248646586740113418, 261786467288875010]
+
+        if ctx.message.author.id in emoji_admins:
+            return True
+
+        return is_owner_check(ctx)
+    return commands.check(predicate)
