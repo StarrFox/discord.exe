@@ -65,9 +65,9 @@ class info:
         e.set_thumbnail(url=guild.icon_url)
         e.add_field(name="ID:", value=guild.id)
         e.add_field(name="Owner:", value=str(guild.owner))
-        e.add_field(name="Members:", value=f"Human: {humans}\nBots: {bots}\nTotal: {humans + bots}")
-        e.add_field(name="Role count:", value=len(guild.roles))
         e.add_field(name="Created:", value=humanize.naturaltime(guild.created_at))
+        e.add_field(name="Role count:", value=len(guild.roles))
+        e.add_field(name="Members:", value=f"Human: {humans}\nBots: {bots}\nTotal: {humans + bots}")
         e.add_field(name="Channels:", value=f"Categories: {len(guild.categories)}\nText: {len(guild.text_channels)}\nVoice: {len(guild.voice_channels)}")
         await ctx.send(embed=e)
 

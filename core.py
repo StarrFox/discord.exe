@@ -31,16 +31,18 @@ with open("settings.json") as f:
 async def get_prefix(bot, message):
     if message.guild is None:
         return ""
-    else:
+    if message.guild.id in bot.preifxes:
         return commands.when_mentioned_or(*bot.prefixes[message.guild.id])(bot, message)
+    else:
+        return 'exe!'
 
-bot = commands.Bot(command_prefix='exe!', description="Discord.exe", case_insensitive=True)
+bot = commands.Bot(command_prefix=get_prefix, description="Discord.exe", case_insensitive=True)
 bot.remove_command('help')
 bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
 bot.prefixes = {}
 
-#Copied from https://github.com/Rapptz/RoboDanny/blob/rewrite/cogs/utils/paginator.py <3
+#Copied from https://github.com/Rapptz/RoboDanny <3
 @bot.command(name='help')
 async def _help(ctx, *, command: str = None):
     """Shows help about a command or the bot"""
@@ -85,6 +87,11 @@ async def on_message_edit(before, after):
     if not after.embeds:
         await bot.process_commands(after)
 
+@bot.event
+async def on_guild_join(guild):
+    bot.prefixes[guild.id] = []
+    bot.prefixes[guild.id].append('exe!')
+
 async def load_mods():
     bot.load_extension('jishaku')
     found = glob.glob('modules/*.py')
@@ -117,6 +124,18 @@ async def load_mods():
 
 async def connect_db():
     bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
+    for guild_id, prefix_list in await bot.db.fetch("SELECT * FROM prefixes;"):
+        bot.prefixes[guild_id] = prefix_list
+    print("Database and prefixes loaded")
+
+async def disconnect_db():
+    set_list = []
+    for guild_id, prefix_list in bot.prefixes.items():
+        temp_set = (guild_id, prefix_list)
+        set_list.append(temp_set)
+    await bot.db.execute("DELETE FROM prefixes;")
+    await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", set_list)
+    print("Database and prefixes unloaded")
 
 async def presenceupdate():
     await bot.wait_until_ready()
@@ -145,4 +164,5 @@ async def globally_block_dms(ctx):
 
 bot.loop.create_task(presenceupdate())
 bot.run(bot.settings['token'])
+disconnect_db()
 bot.close()
