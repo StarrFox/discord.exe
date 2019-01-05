@@ -31,7 +31,7 @@ with open("settings.json") as f:
 async def get_prefix(bot, message):
     if message.guild is None:
         return ""
-    if message.guild.id in bot.preifxes:
+    if message.guild.id in bot.prefixes:
         return commands.when_mentioned_or(*bot.prefixes[message.guild.id])(bot, message)
     else:
         return 'exe!'
