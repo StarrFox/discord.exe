@@ -159,6 +159,6 @@ async def globally_block_dms(ctx):
         return True
 
 bot.loop.create_task(presenceupdate())
+bot.disconnect_db = disconnect_db
 bot.run(bot.settings['token'])
-disconnect_db()
 bot.close()
