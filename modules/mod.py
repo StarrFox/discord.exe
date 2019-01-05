@@ -27,7 +27,8 @@ class mod:
         """List and add/remove your prefixes"""
         guild = ctx.guild
         if guild.id in self.bot.prefixes:
-            await ctx.send(self.bot.prefixes[guild.id])
+            e = discord.Embed(description="\n".join(self.bot.prefixes[guild.id]), color=discord.Color.dark_purple())
+            await ctx.send(embed=e)
         else:
             await ctx.send('exe!')
 
@@ -36,6 +37,8 @@ class mod:
     async def add(self, ctx, prefix: str):
         """Add a prefix for this server"""
         guild = ctx.guild
+        if len(prefix) > 20:
+            return await ctx.send("Prefix too long")
         if guild.id in self.bot.prefixes:
             if len(self.bot.prefixes[guild.id]) >= 10:
                 return await ctx.send('Can only have 10 prefixes, remove one to add this one')
@@ -47,7 +50,7 @@ class mod:
             self.bot.prefixes[guild.id].append(prefix)
             await ctx.send("Prefix added")
 
-    @prefix.command()
+    @prefix.command(aliases=['rem'])
     @checks.serverowner_or_permissions(administrator=True)
     async def remove(self, ctx, prefix: str):
         """Remove a prefix for this server"""
@@ -56,10 +59,13 @@ class mod:
             if len(self.bot.prefixes[guild.id]) == 1:
                 return await ctx.send("Sorry I can't have no prefix")
             else:
-                self.bot.prefixes[guild.id].remove(prefix)
-                return await ctx.send("Prefix removed")
+                if prefix in self.bot.prefixes[guild.id]:
+                    self.bot.prefixes[guild.id].remove(prefix)
+                    return await ctx.send("Prefix removed")
+                else:
+                    return await ctx.send("Prefix not found")
         else:
-            await ctx.send("Hi, you're in the first 30 guilds this bot was added to. Use prefix add to fix this")
+            await ctx.send("Don't know how you got here lol")
 
     @commands.command()
     @checks.serverowner_or_permissions(manage_messages=True)
