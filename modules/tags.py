@@ -66,6 +66,7 @@ class tags:
             except:
                 pass
             if matches:
+                print(matches)
                 if int(matches[0][2]) > 60:
                     return await ctx.send("Tag not found did you mean:" + "\n".join([i[1] for i in matches]))
                 else:
