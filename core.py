@@ -64,13 +64,13 @@ async def _help(ctx, *, command: str = None):
 
 @bot.event
 async def on_ready():
+    await connect_db()
     await load_mods()
     print("Connected as:")
     print(f"User: {bot.user}")
     print(f"ID: {bot.user.id}")
     print(f"With {len(bot.commands)} commands loaded")
     print("Connecting to Database")
-    await connect_db()
 
 @bot.event
 async def on_message_edit(before, after):
