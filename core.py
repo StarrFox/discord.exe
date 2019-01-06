@@ -73,16 +73,6 @@ async def on_ready():
     await connect_db()
 
 @bot.event
-async def on_command_error(ctx, error):
-    error = getattr(error, 'original', error)
-    ignored = (commands.CommandNotFound, commands.UserInputError, commands.CheckFailure)
-    if isinstance(error, ignored):
-        return
-    print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
-    traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
-    await ctx.send(error)
-
-@bot.event
 async def on_message_edit(before, after):
     if not after.embeds:
         await bot.process_commands(after)
