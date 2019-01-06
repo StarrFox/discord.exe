@@ -9,10 +9,10 @@ class tags:
     def __init__(self, bot):
         self.bot = bot
         self.tags = {}
-        self.load_tags()
+        self.bot.loop.create_task(self.load_tags())
 
     def __unload(self):
-        self.unload_tags()
+        self.bot.loop.create_task(self.unload_tags())
         print('Tags cog unloaded')
 
     async def on_guild_join(self, guild):
