@@ -62,11 +62,10 @@ class tags:
         guild = ctx.guild
         if not tag_name in self.tags[guild.id]:
             try:
-                matches = process.extract(tag_name, self.tags[guild.id], limit=2)
+                matches = process.extract(tag_name, self.tags[guild.id].keys(), limit=2)
             except:
                 pass
             if matches:
-                print(matches)
                 if int(matches[0][2]) > 60:
                     return await ctx.send("Tag not found did you mean:" + "\n".join([i[1] for i in matches]))
                 else:
