@@ -57,7 +57,7 @@ class logger:
         ignored = (commands.CommandNotFound, commands.UserInputError, commands.CheckFailure)
         if isinstance(error, ignored):
             return
-        e = discord.Embed(title="Command error", description=f"{error}: {error.__traceback__}", color=discord.Color.dark_purple())
+        e = discord.Embed(title="Command error", description=f"{error}: {error.__traceback__.stack}", color=discord.Color.dark_purple())
         e.set_thumbnail(url=ctx.author.avatar_url)
         e.add_field(name="Guild:", value=f"Name: {ctx.guild.name}\nID: {ctx.guild.id}")
         e.add_field(name="Invoker", value=f"Name: {str(ctx.author)}\nID: {ctx.author.id}")
