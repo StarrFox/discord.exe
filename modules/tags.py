@@ -32,7 +32,9 @@ class tags:
             return
         temp_tags = {}
         for item in fetch:
-            if not temp_tags[item[0]]:
+            try:
+                temp_tags[item[0]]
+            except:
                 temp_tags[item[0]] = {}
             temp_tags[item[0]][item[1]] = {}
             temp_tags[item[0]][item[1]]['content'] = item[2]
@@ -59,9 +61,15 @@ class tags:
         tag_name = tag_name.lower()
         guild = ctx.guild
         if not tag_name in self.tags[guild.id]:
-            matches = process.extract(tag_name, self.tags[guild.id], limit=2)
-            if matches[0][2] > 60:
-                return await ctx.send("Tag not found did you mean:" + "\n".join([i[1] for i in matches]))
+            try:
+                matches = process.extract(tag_name, self.tags[guild.id], limit=2)
+            except:
+                pass
+            if matches:
+                if int(matches[0][2]) > 60:
+                    return await ctx.send("Tag not found did you mean:" + "\n".join([i[1] for i in matches]))
+                else:
+                    return await ctx.send("Tag not found")
             else:
                 return await ctx.send("Tag not found")
         else:
