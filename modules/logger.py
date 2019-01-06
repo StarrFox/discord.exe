@@ -41,7 +41,6 @@ class logger:
             await self.pm_logs.send(embed=e)
 
     async def on_command_completion(self, ctx):
-        channel = self.bot.get_channel(531494671600451664)
         e = discord.Embed(title=f"Command run log", color=discord.Color.dark_purple())
         e.set_thumbnail(url=ctx.author.avatar_url)
         e.add_field(name="Guild:", value=f"Name: {ctx.guild.name}\nID: {ctx.guild.id}")
@@ -53,7 +52,7 @@ class logger:
             await self.command_logs.send("Error in command_complete")
             await self.error_logs.send(exe)
 
-    async def on_command_error(ctx, error):
+    async def on_command_error(self, ctx, error):
         error = getattr(error, 'original', error)
         ignored = (commands.CommandNotFound, commands.UserInputError, commands.CheckFailure)
         if isinstance(error, ignored):
