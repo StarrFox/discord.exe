@@ -39,5 +39,14 @@ class logger:
             e.add_field(name="Content:", value=message.content, inline=False)
             await channel.send(embed=e)
 
+    async def on_command_completion(self, ctx):
+        channel = self.bot.get_channel(531494671600451664)
+        e = discord.Embed(title=f"Command run log", color=discord.Color.dark_purple())
+        e.set_thumbnail(url=ctx.author.avatar_url)
+        e.add_field(name="Guild:", value=f"Name: {ctx.guild.name}\nID: {ctx.guild.id}")
+        e.add_field(name="Invoker", value=f"Name: {str(ctx.author)}\nID: {ctx.author.id}")
+        e.add_field(name="Content:", value=ctx.message.content)
+        await channel.send(embed=e)
+
 def setup(bot):
     bot.add_cog(logger(bot))
