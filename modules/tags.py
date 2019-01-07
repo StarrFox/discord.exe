@@ -15,13 +15,12 @@ class tags:
         self.bot.loop.create_task(self.unload_tags())
         print('Tags cog unloaded')
 
-    async def on_guild_join(self, guild):
-        #sets up our tag dict
-        self.tags[guild.id] = {}
-
     async def on_guild_remove(self, guild):
         #cleans up after leaving guild
-        self.tags.pop(guild.id)
+        try:
+            self.tags.pop(guild.id)
+        except:
+            pass
 
     async def load_tags(self):
         #Create quarry for reference
@@ -60,6 +59,10 @@ class tags:
         """Create and recall info"""
         tag_name = tag_name.lower()
         guild = ctx.guild
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
         if not tag_name in self.tags[guild.id]:
             try:
                 matches = process.extract(tag_name, self.tags[guild.id].keys(), limit=2)
@@ -82,6 +85,10 @@ class tags:
     async def create(self, ctx, tag_name: commands.clean_content(), *, content: commands.clean_content()):
         """Create a tag"""
         guild = ctx.guild
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
         tag_name = tag_name.lower()
         if tag_name in self.tags[guild.id]:
             return await ctx.send("Tag already exist")
@@ -97,6 +104,10 @@ class tags:
     async def edit(self, ctx, tag_name: commands.clean_content(), *, content: commands.clean_content()):
         """Edit a tag"""
         guild = ctx.guild
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
         tag_name = tag_name.lower()
         if tag_name not in self.tags[guild.id]:
             return await ctx.send(f"Tag not found")
@@ -113,6 +124,10 @@ class tags:
         Must be the tag owner or have the admin perm
         """
         guild = ctx.guild
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
         tag_name = tag_name.lower()
         if tag_name not in self.tags[guild.id]:
             return await ctx.send(f"Tag not found")
@@ -126,6 +141,10 @@ class tags:
     async def info(self, ctx, tag_name: commands.clean_content()):
         """Get info on a tag"""
         guild = ctx.guild
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
         tag_name = tag_name.lower()
         if tag_name not in self.tags[guild.id]:
             return await ctx.send(f"Tag not found")
@@ -136,8 +155,11 @@ class tags:
         e.add_field(name="Owner:", value=f"{tag_owner.mention}\n{str(tag_owner)}")
         await ctx.send(embed=e)
 
-#    @tag.command()
-#    async def list(self)
+    @tag.command(name='list')
+    async def _list(self, ctx, member: discord.Member = None):
+        """Look up tag list for yourself/another member"""
+        guild = ctx.guild
+        
 
 def setup(bot):
     bot.add_cog(tags(bot))
