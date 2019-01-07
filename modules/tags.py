@@ -174,9 +174,10 @@ class tags:
         temp_lines = []
         x = 1
         for key in self.tags[guild.id].keys():
-            temp_lines.append(f"{x}. {key}\n")
+            temp_lines.append(f"{x}. {key}")
             if len(temp_lines) == 20:
-                e = discord.Embed(title="**All tags for this server**", description=temp_lines, color=discord.Color.dark_purple())
+                dex = "\n".join(temp_lines)
+                e = discord.Embed(title="**All tags for this server**", description=dex, color=discord.Color.dark_purple())
                 pager.add_page(data=e)
                 temp_lines = []
             x += 1
