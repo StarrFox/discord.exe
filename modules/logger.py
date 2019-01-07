@@ -66,6 +66,7 @@ class logger:
         if len(ctx.message.content) <= 1024:
             e.add_field(name="Content:", value=ctx.message.content)
         await self.error_logs.send(embed=e)
+        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
 def setup(bot):
     bot.add_cog(logger(bot))
