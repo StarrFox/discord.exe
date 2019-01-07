@@ -84,7 +84,7 @@ class tags:
         guild = ctx.guild
         tag_name = tag_name.lower()
         if tag_name in self.tags[guild.id]:
-            return await ctx.send("Tag already owned")
+            return await ctx.send("Tag already exist")
         else:
             self.tags[guild.id][tag_name] = {}
             self.tags[guild.id][tag_name]['content'] = content
@@ -93,7 +93,7 @@ class tags:
             await ctx.send(f"Tag created")
 
     @tag.command()
-    @commands.cooldown(rate=1, per=20, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
     async def edit(self, ctx, tag_name: commands.clean_content(), *, content: commands.clean_content()):
         """Edit a tag"""
         guild = ctx.guild

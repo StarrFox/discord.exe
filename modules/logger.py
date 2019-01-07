@@ -57,6 +57,8 @@ class logger:
         ignored = (commands.CommandNotFound, commands.UserInputError, commands.CheckFailure)
         if isinstance(error, ignored):
             return
+        if isinstance(error, commands.CommandOnCooldown):
+            return ctx.send(error)
         e = discord.Embed(title="Command error", description=str(error), color=discord.Color.dark_purple())
         e.set_thumbnail(url=ctx.author.avatar_url)
         e.add_field(name="Guild:", value=f"Name: {ctx.guild.name}\nID: {ctx.guild.id}")
