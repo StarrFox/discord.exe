@@ -181,6 +181,9 @@ class tags:
                 pager.add_page(data=e)
                 temp_lines = []
             x += 1
+        dex = "\n".join(temp_lines)
+        e = discord.Embed(title="**All tags for this server**", description=dex, color=discord.Color.dark_purple())
+        pager.add_page(data=e)
         await pager.do_paginator(ctx)
 
 def setup(bot):
