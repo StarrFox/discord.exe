@@ -146,7 +146,7 @@ async def presenceupdate():
 async def shutdown_bot():
     """Graceful shutdown"""
     await bot.change_presence(activity=discord.Game("Shutting down"))
-    keys = bot.cogs.keys()
+    keys = list(bot.cogs.keys())
     for cog in keys:
         bot.unload_extension(cog)
         bot.remove_cog(cog)
