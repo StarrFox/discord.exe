@@ -64,6 +64,7 @@ class tags:
             try:
                 matches = process.extract(tag_name, self.tags[guild.id].keys(), limit=2)
             except:
+                matches = None
                 pass
             if matches:
                 if matches[0][1] > 60:
@@ -77,7 +78,7 @@ class tags:
             return await ctx.send(self.tags[guild.id][tag_name]['content'])
 
     @tag.command(aliases=['add'])
-    @commands.cooldown(rate=1, per=20, type=commands.BucketType.user)
+    @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
     async def create(self, ctx, tag_name: commands.clean_content(), *, content: commands.clean_content()):
         """Create a tag"""
         guild = ctx.guild
