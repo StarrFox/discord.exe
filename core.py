@@ -154,7 +154,7 @@ async def shutdown_bot():
     print("Extensions and cogs unloaded")
     await disconnect_db()
     print("Cleaned up. Now shutting down")
-    await asyncio.sleep(3)
+    await asyncio.sleep(10)
 
 @bot.check
 async def globally_block_dms(ctx):
