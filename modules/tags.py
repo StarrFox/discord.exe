@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 from fuzzywuzzy import process
 from discord.ext.commands.cooldowns import BucketType
+from paginator import paginator
 
 class tags:
 
@@ -90,6 +91,8 @@ class tags:
         except:
             self.tags[guild.id] = {}
         tag_name = tag_name.lower()
+        if len(tag_name) > 100:
+            return await ctx.send("Tag names must be under 100 characters")
         if tag_name in self.tags[guild.id]:
             return await ctx.send("Tag already exist")
         else:
@@ -155,11 +158,29 @@ class tags:
         e.add_field(name="Owner:", value=f"{tag_owner.mention}\n{str(tag_owner)}")
         await ctx.send(embed=e)
 
-    @tag.command(name='list')
-    async def _list(self, ctx, member: discord.Member = None):
-        """Look up tag list for yourself/another member"""
+    @tag.command()
+    async def all(self, ctx, member: discord.Member = None):
+        """List all the tags in this server"""
         guild = ctx.guild
-        
+        #[_t[x:x+20] for x in range(0, len(_t), 20)]
+        try:
+            self.tags[guild.id]
+        except:
+            self.tags[guild.id] = {}
+            return
+        if not member:
+            member = ctx.author
+        pager = paginator(self.bot)
+        temp_lines = []
+        x = 1
+        for key in self.tags[guild.id].keys():
+            temp_lines.append(f"{x}. {key}\n")
+            if len(temp_lines) == 20:
+                e = discord.Embed(title="**All tags for this server**", description=temp_lines, color=discord.Color.dark_purple())
+                pager.add_page(data=e)
+                temp_lines = []
+            x += 1
+        await pager.do_paginator(ctx)
 
 def setup(bot):
     bot.add_cog(tags(bot))

@@ -10,7 +10,7 @@ import typing
 import importlib.util
 import sys
 import traceback
-from utils.paginator import HelpPaginator, CannotPaginate
+from utils.danny_pager_temp import HelpPaginator, CannotPaginate
 import asyncpg
 
 #Logging setup
@@ -41,6 +41,7 @@ bot.remove_command('help')
 bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
 bot.prefixes = {}
+bot.tasks = []
 
 #Copied from https://github.com/Rapptz/RoboDanny <3
 @bot.command(name='help')
@@ -142,6 +143,17 @@ async def presenceupdate():
         await bot.change_presence(activity=discord.Game(f"exe!help | {half}"))
         await asyncio.sleep(300)
 
+async def shutdown_bot():
+    """Graceful shutdown"""
+    await bot.change_presence(activity=discord.Game("Shutting down"))
+    for cog in bot.cogs.keys():
+        bot.unload_extension(cog)
+    await asyncio.sleep(3)
+    print("Cogs unloaded")
+    await disconnect_db()
+    print("Cleaned up. Now shutting down")
+    await asyncio.sleep(3)
+
 @bot.check
 async def globally_block_dms(ctx):
     if ctx.guild is None:
@@ -153,6 +165,6 @@ async def globally_block_dms(ctx):
         return True
 
 bot.loop.create_task(presenceupdate())
-bot.disconnect_db = disconnect_db
+bot.shutdown = shutdown_bot
 bot.run(bot.settings['token'])
 bot.close()

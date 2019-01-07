@@ -15,7 +15,7 @@ class owner:
     @commands.is_owner()
     async def shutdown(self, ctx):
         await ctx.send("Logging out")
-        await self.bot.disconnect_db()
+        await self.bot.shutdown()
         await self.bot.logout()
 
     @commands.command()
@@ -36,9 +36,9 @@ class owner:
     @commands.command()
     @commands.is_owner()
     async def restart(self, ctx):
-        await ctx.send("Restarting discord.exe....")
+        await ctx.send("Restarting Discord.exe....")
         system("start restart.bat")
-        await self.bot.disconnect_db()
+        await self.bot.shutdown()
         await self.bot.logout()
 
     @commands.command()
