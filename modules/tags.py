@@ -67,7 +67,7 @@ class tags:
                 pass
             if matches:
                 if matches[0][1] > 60:
-                    return await ctx.send("Tag not found did you mean:" + "\n".join([i[0] for i in matches]))
+                    return await ctx.send("Tag not found did you mean:\n" + "\n".join([i[0] for i in matches]))
                 else:
                     return await ctx.send("Tag not found")
             else:
