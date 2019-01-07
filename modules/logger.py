@@ -4,6 +4,7 @@ import asyncio
 import traceback
 import aiohttp
 from os import system
+import sys
 
 class logger:
 
