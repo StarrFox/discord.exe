@@ -148,8 +148,9 @@ async def shutdown_bot():
     await bot.change_presence(activity=discord.Game("Shutting down"))
     for cog in bot.cogs.keys():
         bot.unload_extension(cog)
+        bot.remove_cog(cog)
     await asyncio.sleep(3)
-    print("Cogs unloaded")
+    print("Extensions and cogs unloaded")
     await disconnect_db()
     print("Cleaned up. Now shutting down")
     await asyncio.sleep(3)
