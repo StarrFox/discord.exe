@@ -53,7 +53,7 @@ class owner:
         """List of blacklisted users"""
         pager = commands.Paginator()
         for user_id in self.bot.blacklist:
-            pager.add_line(user_id)
+            pager.add_line(str(user_id))
         for page in pager.pages:
             await ctx.send(page)
 

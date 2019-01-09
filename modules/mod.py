@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from bot_utils import checks
+from bot_utils import checks, time
 import typing
 
 class BannedMember(commands.Converter):
@@ -21,6 +21,32 @@ class mod:
 
     def __init__(self, bot):
         self.bot = bot
+        self.mute_roles = {}
+        self.bot.loop.create_task(self.load_mute_roles())
+
+    def __unload(self):
+        self.bot.loop.create_task(self.unload_mute_roles())
+        print('Mod cog unloaded')
+
+    async def on_guild_remove(self, guild):
+        #cleans up after leaving guild
+        try:
+            self.tags.pop(guild.id)
+        except:
+            pass
+
+    async def load_mute_roles(self):
+        fetch = await self.bot.db.fetch("SELECT * FROM mute_roles;")
+        if fetch is None:
+            return print("No mute roles found")
+        for item in fetch:
+            self.mute_roles[item[0]] = item[1]
+        print("Mute roles loaded")
+
+    async def unload_mute_roles(self):
+        await self.bot.db.execute("DELETE FROM mute_roles;")
+        await self.bot.db.executemany("INSERT INTO mute_roles VALUES ($1, $2)", self.mute_roles.items())
+        print("Mute roles unloaded")
 
     @commands.group(invoke_without_command=True)
     async def prefix(self, ctx):
@@ -170,6 +196,51 @@ class mod:
     @checks.serverowner_or_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, *, time: str = None):
         """Mute a server member"""
+        guild = ctx.message.guild
+        mod = ctx.message.author
+        if guild.id not in self.mute_roles:
+            msg = await ctx.send("No mute role found one moment while I create one")
+            role = await self.create_mute_role(guild)
+            await msg.edit('Done')
+        else:
+            role = guild.get_role(self.mute_roles[guild.id])
+        if user != mod and mod.top_role.position > user.top_role.position:
+            if time:
+                await self.time_mute(ctx, role, user, time)
+            else:
+                try:
+                    await user.add_roles(role)
+                    await ctx.send('User muted')
+                except:
+                    await ctx.send('Muting failed')
+
+    async def create_mute_role(self, guild):
+        """Creates role named 'Discord.exe mute'
+        Then makes overwrites for all channels"""
+        try:
+            role = await guild.create_role(name="Discord.exe mute", permissions=discord.Permissions())
+        except:
+            return None
+        overwrite = discord.PermissionOverwrite()
+        overwrite.send_messages = False
+        overwrite.add_reactions = False
+        overwrite.connect = False
+        for channel in guild.channels:
+            try:
+                await channel.set_permissions(target=role, overwrite=overwrite)
+            except:
+                pass
+        return role
+        
+    async def time_mute(self, ctx, role, user, time):
+        time = await time.parse_time(time)
+        if time == 0:
+            return await ctx.send("Invalid time")
+        await user.add_roles(role)
+        await ctx.send(f"{str(user)} muted")
+        await asyncio.sleep(time)
+        await user.remove_roles(role)
+        await ctx.send(f"{str(user)} unmuted")
 
 def setup(bot):
     bot.add_cog(mod(bot))

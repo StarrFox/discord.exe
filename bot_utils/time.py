@@ -5,23 +5,13 @@ from datetime import datetime
 import asyncio
 import re
 
-"""
-https://github.com/bear/parsedatetime
-
-second = 1
-minute = 60
-hour = 3600
-day = 90000
-year = (round(year/4)*32,940,000)+((year-round(year/4))*32,850,000)
-"""
-
 async def parse_time(entry):
     """Attepts to convert user input
     to an amount of seconds"""
-    day = re.search(r'(\d+\s?d+)', entry)
-    hour = re.search(r'(\d+\s?h+)', entry)
-    minute = re.search(r'(\d+\s?m+)', entry)
-    second = re.search(r"(\d+\s?s+)", entry)
+    day = re.search(r'(\d+)\s?d(?:ays?)?', entry)
+    hour = re.search(r'(\d+)\s?h(?:ours?)?', entry)
+    minute = re.search(r'(\d+)\s?m(?:inutes?)?', entry)
+    second = re.search(r"(\d+)\s?s(?:econds?)?", entry)
     if day:
         day = await get_datetime(day)
     if hour:
