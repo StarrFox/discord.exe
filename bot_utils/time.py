@@ -15,22 +15,39 @@ day = 90000
 year = (round(year/4)*32,940,000)+((year-round(year/4))*32,850,000)
 """
 
-async def prase_time(entry):
+async def parse_time(entry):
     """Attepts to convert user input
     to an amount of seconds"""
     day = re.search(r'(\d+\s?m+)', entry)
     hour = re.search(r'(\d+\s?m+)', entry)
     minute = re.search(r'(\d+\s?m+)', entry)
     second = re.search(r"(\d+\s?m+)", entry)
-    day = await get_datetime(day)
-    hour = await get_datetime(hour)
-    minute = await get_datetime(minute)
-    second = await get_datetime(second)
-    day = await get_seconds(day)
-    hour = await get_seconds(hour)
-    minute = await get_seconds(minute)
-    second = await get_seconds(second)
-    return day + hour + minute + second
+    if day:
+        day = await get_datetime(day)
+    if hour:
+        hour = await get_datetime(hour)
+    if minute:
+        minute = await get_datetime(minute)
+    if second:
+        second = await get_datetime(second)
+    if day:
+        day = await get_seconds(day)
+    if hour:
+        hour = await get_seconds(hour)
+    if minute:
+        minute = await get_seconds(minute)
+    if second:
+        second = await get_seconds(second)
+    total = 0
+    if day:
+        total += day
+    if hour:
+        total += hour
+    if minute:
+        total += minute
+    if second:
+        total += second
+    return total
 
 async def get_seconds(date_time):
     now = datetime.utcnow()
