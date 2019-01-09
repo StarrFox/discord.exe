@@ -18,10 +18,10 @@ year = (round(year/4)*32,940,000)+((year-round(year/4))*32,850,000)
 async def parse_time(entry):
     """Attepts to convert user input
     to an amount of seconds"""
-    day = re.search(r'(\d+\s?m+)', entry)
-    hour = re.search(r'(\d+\s?m+)', entry)
+    day = re.search(r'(\d+\s?d+)', entry)
+    hour = re.search(r'(\d+\s?h+)', entry)
     minute = re.search(r'(\d+\s?m+)', entry)
-    second = re.search(r"(\d+\s?m+)", entry)
+    second = re.search(r"(\d+\s?s+)", entry)
     if day:
         day = await get_datetime(day)
     if hour:
