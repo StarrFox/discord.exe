@@ -13,13 +13,13 @@ async def parse_time(entry):
     minute = re.search(r'(\d+)\s?m(?:inutes?)?', entry)
     second = re.search(r"(\d+)\s?s(?:econds?)?", entry)
     if day:
-        day = await get_datetime(day)
+        day = await get_datetime(day[0])
     if hour:
-        hour = await get_datetime(hour)
+        hour = await get_datetime(hour[0])
     if minute:
-        minute = await get_datetime(minute)
+        minute = await get_datetime(minute[0])
     if second:
-        second = await get_datetime(second)
+        second = await get_datetime(second[0])
     if day:
         day = await get_seconds(day)
     if hour:
