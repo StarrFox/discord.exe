@@ -42,6 +42,7 @@ bot.settings = settings
 bot.start_time = datetime.datetime.utcnow()
 bot.prefixes = {}
 bot.tasks = []
+bot.blacklist = []
 
 #Copied from https://github.com/Rapptz/RoboDanny <3
 @bot.command(name='help')
@@ -119,14 +120,23 @@ async def load_mods():
 
 async def connect_db():
     bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
+    print("Datebase loaded")
     for guild_id, prefix_list in await bot.db.fetch("SELECT * FROM prefixes;"):
         bot.prefixes[guild_id] = prefix_list
-    print("Database and prefixes loaded")
+    print("Prefixes loaded")
+    for user_id in await bot.db.fetch("SELCT * FROM blacklist;"):
+        bot.blacklist.append(user_id)
+    print("Blacklist loaded")
 
 async def disconnect_db():
     await bot.db.execute("DELETE FROM prefixes;")
     await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", bot.prefixes.items())
-    print("Database and prefixes unloaded")
+    print("Prefixes unloaded")
+    await bot.db.execute("DELETE FROM blacklist;")
+    await bot.db.executemany("INSERT INTO blacklist VALUES($1)", bot.blacklist)
+    print("Blacklist unloaded")
+    await bot.db.close()
+    print("Database unloaded")
 
 async def presenceupdate():
     await bot.wait_until_ready()
@@ -165,6 +175,10 @@ async def globally_block_dms(ctx):
             return False
     else:
         return True
+
+@bot.check
+async def blacklist(ctx):
+    return ctx.author.id not in ctx.bot.blacklist
 
 bot.loop.create_task(presenceupdate())
 bot.shutdown = shutdown_bot

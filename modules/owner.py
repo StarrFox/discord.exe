@@ -47,5 +47,27 @@ class owner:
         await user.send(msg)
         await ctx.send("message sent")
 
+    @commands.group(invoke_without_command=True)
+    @checks.is_owner()
+    async def blacklist(self, ctx):
+        """List of blacklisted users"""
+        pager = commands.Paginator()
+        for user_id in self.bot.blacklist:
+            pager.add_line(user_id)
+        for page in pager.pages:
+            await ctx.send(page)
+
+    @blacklist.command()
+    async def add(self, ctx, user: discord.Member):
+        """Add user to blacklist"""
+        self.bot.blacklist.append(user.id)
+        await ctx.send("Done.")
+
+    @blacklist.command(aliases=['rem'])
+    async def remove(self, ctx, user: discord.Member):
+        """Remove user from blacklist"""
+        self.bot.blacklist.remove(user.id)
+        await ctx.send("Done.")
+
 def setup(bot):
     bot.add_cog(owner(bot))
