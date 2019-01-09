@@ -31,7 +31,7 @@ class mod:
     async def on_guild_remove(self, guild):
         #cleans up after leaving guild
         try:
-            self.tags.pop(guild.id)
+            self.mute_roles.pop(guild.id)
         except:
             pass
 
@@ -201,7 +201,7 @@ class mod:
         if guild.id not in self.mute_roles:
             msg = await ctx.send("No mute role found one moment while I create one")
             role = await self.create_mute_role(guild)
-            await msg.edit('Done')
+            await msg.edit(content="Done")
         else:
             role = guild.get_role(self.mute_roles[guild.id])
         if user != mod and mod.top_role.position > user.top_role.position:
