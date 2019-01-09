@@ -124,7 +124,7 @@ async def connect_db():
     for guild_id, prefix_list in await bot.db.fetch("SELECT * FROM prefixes;"):
         bot.prefixes[guild_id] = prefix_list
     print("Prefixes loaded")
-    for user_id in await bot.db.fetch("SELCT * FROM blacklist;"):
+    for user_id in await bot.db.fetch("SELECT * FROM blacklist;"):
         bot.blacklist.append(user_id)
     print("Blacklist loaded")
 
