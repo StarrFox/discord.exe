@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from modules.utils import checks
+from bot_utils import checks
 import typing
 
 class BannedMember(commands.Converter):
@@ -140,7 +140,6 @@ class mod:
         guild = ctx.message.guild
         mod = ctx.message.author
         e = discord.Embed()
-        guildid = str(guild.id)
         if user != mod and mod.top_role.position > user.top_role.position:
             try:
                 await guild.ban(user)

@@ -3,7 +3,7 @@ from discord.ext import commands
 import asyncio
 import async_cse
 import typing
-from modules.utils import checks
+from bot_utils import checks
 
 class general:
 

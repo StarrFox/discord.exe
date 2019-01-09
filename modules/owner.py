@@ -4,7 +4,7 @@ import asyncio
 import traceback
 import aiohttp
 from os import system
-from modules.utils import checks
+from bot_utils import checks
 
 class owner:
 

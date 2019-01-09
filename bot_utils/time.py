@@ -44,4 +44,5 @@ class time:
     async def get_datetime(self, entry):
         cal = pdt.Calendar()
         time_struct, parse_status = cal.parse(entry)
+        del parse_status
         return datetime(*time_struct[:6])

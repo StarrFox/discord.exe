@@ -3,7 +3,7 @@ from discord.ext import commands
 import asyncio
 from fuzzywuzzy import process
 from discord.ext.commands.cooldowns import BucketType
-from modules.utils.paginator import paginator
+from bot_utils.paginator import paginator
 
 class tags:
 
