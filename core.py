@@ -178,7 +178,10 @@ async def globally_block_dms(ctx):
 
 @bot.check
 async def blacklist(ctx):
-    return ctx.author.id not in ctx.bot.blacklist
+    if ctx.author.id in ctx.bot.blacklist:
+        return False
+    else:
+        return True
 
 bot.loop.create_task(presenceupdate())
 bot.shutdown = shutdown_bot
