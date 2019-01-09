@@ -1,7 +1,8 @@
 import discord
 from discord.ext import commands
 import asyncio
-from bot_utils import checks, time
+from bot_utils import checks
+from bot_utils import time as bt
 import typing
 
 class BannedMember(commands.Converter):
@@ -233,7 +234,7 @@ class mod:
         return role
         
     async def time_mute(self, ctx, role, user, time):
-        time = await time.parse_time(time)
+        time = await bt.parse_time(time)
         if time == 0:
             return await ctx.send("Invalid time")
         await user.add_roles(role)
