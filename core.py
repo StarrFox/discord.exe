@@ -10,7 +10,7 @@ import typing
 import importlib.util
 import sys
 import traceback
-from utils.danny_pager_temp import HelpPaginator, CannotPaginate
+from modules.utils.danny_pager_temp import HelpPaginator, CannotPaginate
 import asyncpg
 
 #Logging setup

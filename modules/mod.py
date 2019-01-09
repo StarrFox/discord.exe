@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import asyncio
-from utils import checks
+from modules.utils import checks
 import typing
 
 class BannedMember(commands.Converter):
@@ -166,6 +166,11 @@ class mod:
             e.add_field(name='Unban', value="{} could not be unbanned".format(user))
         e.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
         await ctx.send(embed=e)
+
+    @commands.command()
+    @checks.serverowner_or_permissions(manage_messages=True)
+    async def mute(self, ctx, user: discord.Member, *, time: str = None):
+        """Mute a server member"""
 
 def setup(bot):
     bot.add_cog(mod(bot))

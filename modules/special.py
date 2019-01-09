@@ -3,7 +3,7 @@ from discord.ext import commands
 import asyncio
 import json
 from discord.ext.commands.cooldowns import BucketType
-from utils import checks
+from modules.utils import checks
 
 class special:
 
