@@ -97,7 +97,7 @@ class tags:
         tag_name = tag_name.lower()
         if tag_name not in self.bot.tags[guild.id]:
             return await ctx.send(f"Tag not found")
-        if ctx.author.id == self.bot.tags[guild.id][tag_name] or ctx.author.guild_permissions.administrator:
+        if ctx.author.id == self.bot.tags[guild.id][tag_name]['owner_id'] or ctx.author.guild_permissions.administrator:
             self.bot.tags[guild.id].pop(tag_name)
             return await ctx.send("Tag deleted")
         else:
