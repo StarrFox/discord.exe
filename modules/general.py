@@ -164,7 +164,7 @@ class general:
         final = ""
         for c in entry:
             x = int(c, 2)
-            x = char(x)
+            x = chr(x)
             final += x
         if len(final) > 1000:
             fp = io.BytesIO(final.encode('utf-8'))
