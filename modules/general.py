@@ -4,6 +4,7 @@ import asyncio
 import async_cse
 import typing
 from bot_utils import checks
+import io
 
 class general:
 
@@ -149,6 +150,21 @@ class general:
             x = ord(c)
             x = bin(x)
             x = x.replace('b', '')
+            final += x
+        if len(final) > 1000:
+            fp = io.BytesIO(final.encode('utf-8'))
+            await ctx.send("Output too long, dmed your file")
+            await ctx.author.send(file=discord.File(fp, 'results.txt'))
+        else:
+            await ctx.send(final)
+
+    @commands.command(aliases=['fbin'])
+    async def frombinary(self, ctx, *entry: str):
+        """Convery binary to text"""
+        final = ""
+        for c in entry:
+            x = int(c, 2)
+            x = char(x)
             final += x
         if len(final) > 1000:
             fp = io.BytesIO(final.encode('utf-8'))
