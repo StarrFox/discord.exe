@@ -141,5 +141,21 @@ class general:
         await hook.send(message, avatar_url=user.avatar_url)
         await hook.delete()
 
+    @commands.command(aliases=['tobin'])
+    async def tobinary(self, ctx, *, entry: str):
+        """Convert text to binary"""
+        final = ""
+        for c in entry:
+            x = ord(c)
+            x = bin(x)
+            x = x.replace('b', '')
+            final += x
+        if len(final) > 1000:
+            fp = io.BytesIO(final.encode('utf-8'))
+            await ctx.send("Output too long, dmed your file")
+            await ctx.author.send(file=discord.File(fp, 'results.txt'))
+        else:
+            await ctx.send(final)
+
 def setup(bot):
     bot.add_cog(general(bot))
