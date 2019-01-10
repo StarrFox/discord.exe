@@ -43,6 +43,8 @@ bot.start_time = datetime.datetime.utcnow()
 bot.prefixes = {}
 bot.tasks = []
 bot.blacklist = []
+bot.mute_roles = {}
+bot.tags = {}
 
 #Copied from https://github.com/Rapptz/RoboDanny <3
 @bot.command(name='help')
@@ -121,6 +123,8 @@ async def load_mods():
 async def connect_db():
     bot.db = await asyncpg.connect('postgresql://postgres@localhost/exe', password=bot.settings['db_pass'])
     print("Datebase loaded")
+    await load_tags()
+    await load_mute_roles()
     for guild_id, prefix_list in await bot.db.fetch("SELECT * FROM prefixes;"):
         bot.prefixes[guild_id] = prefix_list
     print("Prefixes loaded")
@@ -129,6 +133,8 @@ async def connect_db():
     print("Blacklist loaded")
 
 async def disconnect_db():
+    await unload_tags()
+    await unload_mute_roles()
     await bot.db.execute("DELETE FROM prefixes;")
     await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", bot.prefixes.items())
     print("Prefixes unloaded")
@@ -165,6 +171,50 @@ async def shutdown_bot():
     await disconnect_db()
     print("Cleaned up. Now shutting down")
     await asyncio.sleep(10)
+
+async def load_mute_roles():
+    fetch = await bot.db.fetch("SELECT * FROM mute_roles;")
+    if fetch is None:
+        return print("No mute roles found")
+    for item in fetch:
+        bot.mute_roles[item[0]] = item[1]
+    print("Mute roles loaded")
+
+async def unload_mute_roles():
+    await bot.db.execute("DELETE FROM mute_roles;")
+    await bot.db.executemany("INSERT INTO mute_roles VALUES ($1, $2)", bot.mute_roles.items())
+    print("Mute roles unloaded")
+
+async def load_tags():
+    #Create quarry for reference
+    #CREATE TABLE tags(guild_id BIGINT unique, tag_name text, content text, uses BIGINT, owner_id BIGINT);
+    fetch = await bot.db.fetch("SELECT * FROM tags;")
+    if fetch is None:
+        print('No tags found')
+        return
+    temp_tags = {}
+    for item in fetch:
+        try:
+            temp_tags[item[0]]
+        except:
+            temp_tags[item[0]] = {}
+        temp_tags[item[0]][item[1]] = {}
+        temp_tags[item[0]][item[1]]['content'] = item[2]
+        temp_tags[item[0]][item[1]]['uses'] = item[3]
+        temp_tags[item[0]][item[1]]['owner_id'] = item[4]
+    bot.tags = temp_tags
+    print('Tags loaded')
+
+async def unload_tags():
+    #(guild_id, tag_name, content, uses, owner_id)
+    list_of_sets = []
+    for guild_id in bot.tags:
+        for tag_name in bot.tags[guild_id]:
+            temp_set = (guild_id, tag_name, bot.tags[guild_id][tag_name]['content'], bot.tags[guild_id][tag_name]['uses'], bot.tags[guild_id][tag_name]['owner_id'])
+            list_of_sets.append(temp_set)
+    await bot.db.execute("DELETE FROM tags;")
+    await bot.db.executemany("INSERT INTO tags(guild_id, tag_name, content, uses, owner_id) VALUES ($1, $2, $3, $4, $5)", list_of_sets)
+    print('Tags saved and unloaded')
 
 @bot.check
 async def globally_block_dms(ctx):

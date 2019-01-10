@@ -7,7 +7,8 @@ import re
 
 async def parse_time(entry):
     """Attepts to convert user input
-    to an amount of seconds"""
+    to an amount of seconds
+    Really messy but it works"""
     day = re.search(r'(\d+)\s?d(?:ays?)?', entry)
     hour = re.search(r'(\d+)\s?h(?:ours?)?', entry)
     minute = re.search(r'(\d+)\s?m(?:inutes?)?', entry)

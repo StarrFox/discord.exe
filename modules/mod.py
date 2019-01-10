@@ -22,32 +22,13 @@ class mod:
 
     def __init__(self, bot):
         self.bot = bot
-        self.mute_roles = {}
-        self.bot.loop.create_task(self.load_mute_roles())
-
-    def __unload(self):
-        self.bot.loop.create_task(self.unload_mute_roles())
-        print('Mod cog unloaded')
 
     async def on_guild_remove(self, guild):
         #cleans up after leaving guild
         try:
-            self.mute_roles.pop(guild.id)
+            self.bot.mute_roles.pop(guild.id)
         except:
             pass
-
-    async def load_mute_roles(self):
-        fetch = await self.bot.db.fetch("SELECT * FROM mute_roles;")
-        if fetch is None:
-            return print("No mute roles found")
-        for item in fetch:
-            self.mute_roles[item[0]] = item[1]
-        print("Mute roles loaded")
-
-    async def unload_mute_roles(self):
-        await self.bot.db.execute("DELETE FROM mute_roles;")
-        await self.bot.db.executemany("INSERT INTO mute_roles VALUES ($1, $2)", self.mute_roles.items())
-        print("Mute roles unloaded")
 
     @commands.group(invoke_without_command=True)
     async def prefix(self, ctx):
@@ -199,12 +180,12 @@ class mod:
         """Mute a server member"""
         guild = ctx.message.guild
         mod = ctx.message.author
-        if guild.id not in self.mute_roles:
+        if guild.id not in self.bot.mute_roles:
             msg = await ctx.send("No mute role found one moment while I create one")
             role = await self.create_mute_role(guild)
             await msg.edit(content="Done")
         else:
-            role = guild.get_role(self.mute_roles[guild.id])
+            role = guild.get_role(self.bot.mute_roles[guild.id])
         if user != mod and mod.top_role.position > user.top_role.position:
             if time:
                 await self.time_mute(ctx, role, user, time)
@@ -238,7 +219,7 @@ class mod:
         if time == 0:
             return await ctx.send("Invalid time")
         await user.add_roles(role)
-        await ctx.send(f"{str(user)} muted")
+        await ctx.send(f"`{str(user)}` muted for about `{round(time)} seconds`")
         await asyncio.sleep(time)
         await user.remove_roles(role)
         await ctx.send(f"{str(user)} unmuted")
