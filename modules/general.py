@@ -165,7 +165,7 @@ class general:
         for c in entry:
             x = int(c, 2)
             x = chr(x)
-            final += x + " "
+            final += x
         if len(final) > 1000:
             fp = io.BytesIO(final.encode('utf-8'))
             await ctx.send("Output too long, dmed your file")
