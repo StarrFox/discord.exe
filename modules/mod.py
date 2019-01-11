@@ -181,7 +181,8 @@ class mod:
         old_nick = user.nick
         if nick:
             if len(nick) > 32:
-                return await ctx.send(f"{nick.replace('@', '@\u200b')} is {len(nick)-32} over the character limit")
+                clean = nick.replace('@', '@\u200b')
+                return await ctx.send(f"{clean} is {len(nick)-32} over the character limit")
         if ctx.author.top_role.position > user.top_role.position or user.id == ctx.author.id:
             try:
                 await user.edit(nick=nick)
