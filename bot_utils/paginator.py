@@ -28,7 +28,7 @@ class paginator:
         while cont:
             try:
                 reaction, user = await ctx.bot.wait_for(
-                    "reaction_add", check=lambda r, u: u == ctx.author and r.message.id == paginator.message.id, timeout=60.0
+                    "reaction_add", check=lambda r, u: u == ctx.author and r.message.id == paginator.id, timeout=60.0
                 )
             except asyncio.TimeoutError:
                 break
