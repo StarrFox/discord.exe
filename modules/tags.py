@@ -9,6 +9,15 @@ class tags:
 
     def __init__(self, bot):
         self.bot = bot
+        self.reserved = [
+            'add',
+            'all',
+            'create',
+            'edit',
+            'delete',
+            'info',
+            'list'
+        ]
 
     async def on_guild_remove(self, guild):
         #cleans up after leaving guild
@@ -50,6 +59,8 @@ class tags:
         """Create a tag"""
         guild = ctx.guild
         tag_name = tag_name.lower()
+        if tag_name in self.reserved:
+            return await ctx.send("This tag name is a reserved word")
         if len(tag_name) > 100:
             return await ctx.send("Tag names must be under 100 characters")
         if tag_name in self.bot.tags[guild.id]:
