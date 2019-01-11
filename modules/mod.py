@@ -178,14 +178,14 @@ class mod:
     @checks.serverowner_or_permissions(manage_nicknames=True)
     async def nickname(self, ctx, member: discord.Member, *, nick: str):
         """Change another members nickname"""
-        old_nick = user.nick
+        old_nick = member.nick
         if nick:
             if len(nick) > 32:
                 clean = nick.replace('@', '@\u200b')
                 return await ctx.send(f"{clean} is {len(nick)-32} over the character limit")
-        if ctx.author.top_role.position > user.top_role.position or user.id == ctx.author.id:
+        if ctx.author.top_role.position > member.top_role.position or member.id == ctx.author.id:
             try:
-                await user.edit(nick=nick)
+                await member.edit(nick=nick)
                 await ctx.send(f"Changed {old_nick}'s nickname to {nick}'")
             except:
                 await ctx.send("Missing perms or invalid characters")
