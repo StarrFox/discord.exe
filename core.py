@@ -192,17 +192,13 @@ async def load_tags():
     if fetch is None:
         print('No tags found')
         return
-    temp_tags = {}
+    for guild in bot.guilds:
+        bot.tags[guild.id] = {}
     for item in fetch:
-        try:
-            temp_tags[item[0]]
-        except:
-            temp_tags[item[0]] = {}
-        temp_tags[item[0]][item[1]] = {}
-        temp_tags[item[0]][item[1]]['content'] = item[2]
-        temp_tags[item[0]][item[1]]['uses'] = item[3]
-        temp_tags[item[0]][item[1]]['owner_id'] = item[4]
-    bot.tags = temp_tags
+        bot.tags[item[0]][item[1]] = {}
+        bot.tags[item[0]][item[1]]['content'] = item[2]
+        bot.tags[item[0]][item[1]]['uses'] = item[3]
+        bot.tags[item[0]][item[1]]['owner_id'] = item[4]
     print('Tags loaded')
 
 async def unload_tags():
