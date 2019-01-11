@@ -20,7 +20,10 @@ class paginator:
         self.pages.append(data)
 
     async def do_paginator(self, ctx):
-        paginator = await self.prepare_paginator(ctx)
+        if len(self.pages) == 1:
+            paginator = await self.one_page(ctx)
+        else:
+            paginator = await self.prepare_paginator(ctx)
         cont = True
         while cont:
             try:
