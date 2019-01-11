@@ -25,13 +25,19 @@ class paginator:
         while cont:
             try:
                 reaction, user = await ctx.bot.wait_for(
-                    "reaction_add", check=lambda r, u: u == ctx.author, timeout=60.0
+                    "reaction_add", check=lambda r, u: u == ctx.author and r.message.id == ctx.message.id, timeout=60.0
                 )
             except asyncio.TimeoutError:
                 break
             cont = await self.parse_reaction(
                 await ctx.bot.get_context(paginator, ), ctx, str(reaction)
             )
+
+    async def one_page(self, ctx):
+        msg = await ctx.send(embed=self.pages[0])
+        await msg.add_reaction("\u23f9")
+        self.active = self.pages[0]
+        return msg
 
     async def prepare_paginator(self, ctx):
         msg = await ctx.send(embed=self.pages[0])
