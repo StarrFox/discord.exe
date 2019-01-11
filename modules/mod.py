@@ -174,6 +174,21 @@ class mod:
         e.set_author(name=ctx.message.author, icon_url=ctx.message.author.avatar_url)
         await ctx.send(embed=e)
 
+    @commands.command(aliases=["nick", "rename"])
+    @checks.serverowner_or_permissions(manage_nicknames=True)
+    async def nickname(self, ctx, member: discord.Member, *, nick: str):
+        """Change another members nickname"""
+        old_nick = user.nick
+        if nick:
+            if len(nick) > 32:
+                return await ctx.send(f"{nick.replace('@', '@\u200b')} is {len(nick)-32} over the character limit")
+        if ctx.author.top_role.position > user.top_role.position or user.id == ctx.author.id:
+            try:
+                await user.edit(nick=nick)
+                await ctx.send(f"Changed {old_nick}'s nickname to {nick}'")
+            except:
+                await ctx.send("Missing perms or invalid characters")
+
     @commands.command()
     @checks.serverowner_or_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, *, time: str = None):

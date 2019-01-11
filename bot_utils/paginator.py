@@ -31,6 +31,10 @@ class paginator:
                     "reaction_add", check=lambda r, u: u == ctx.author and r.message.id == paginator.id, timeout=60.0
                 )
             except asyncio.TimeoutError:
+                try:
+                    await paginator.clear_reactions()
+                except:
+                    pass
                 break
             cont = await self.parse_reaction(
                 await ctx.bot.get_context(paginator, ), ctx, str(reaction)

@@ -70,7 +70,7 @@ class tags:
             self.bot.tags[guild.id][tag_name]['content'] = content
             self.bot.tags[guild.id][tag_name]['uses'] = 0
             self.bot.tags[guild.id][tag_name]['owner_id'] = ctx.author.id
-            await ctx.send(f"Tag created")
+            await ctx.send("Tag created")
 
     @tag.command()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
@@ -84,7 +84,7 @@ class tags:
             return await ctx.send(f"You do not own this tag")
         else:
             self.bot.tags[guild.id][tag_name]['content'] = content
-            await ctx.send(f"Edited tag")
+            await ctx.send("Edited tag")
 
     @tag.command()
     async def delete(self, ctx, tag_name: commands.clean_content()):
