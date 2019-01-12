@@ -66,6 +66,12 @@ async def _help(ctx, *, command: str = None):
     except Exception as e:
         await ctx.send(e)
 
+@bot.command()
+@commands.is_owner()
+async def load_jsk(ctx):
+    """Backup in case if failure"""
+    bot.load_extension('jishaku')
+
 @bot.event
 async def on_ready():
     await connect_db()
@@ -139,7 +145,7 @@ async def disconnect_db():
     await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", bot.prefixes.items())
     print("Prefixes unloaded")
     await bot.db.execute("DELETE FROM blacklist;")
-    await bot.db.executemany("INSERT INTO blacklist VALUES($1)", bot.blacklist)
+    await bot.db.execute("INSERT INTO blacklist VALUES($1)", *bot.blacklist)
     print("Blacklist unloaded")
     await bot.db.close()
     print("Database unloaded")
