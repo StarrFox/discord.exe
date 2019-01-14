@@ -32,7 +32,7 @@ class utilities:
             e = discord.Embed(name=f"**Users with the {perm} perm**", description=dex)
             pager.add_page(data=e)
         if len(pager.pages) != 0:
-            await pager.do_paginator
+            await pager.do_paginator(ctx)
 
 def setup(bot):
     bot.add_cog(utilities(bot))
