@@ -17,7 +17,7 @@ class utilities:
         pager = paginator(self.bot)
         lines = []
         x = 1
-        for m in ctx.guild.members:
+        for m in ctx.guild.members.reverse():
             for item in m.guild_permissions:
                 if item[0] == perm and item[1] is True:
                     lines.append(f"{x}. {m.name}")
