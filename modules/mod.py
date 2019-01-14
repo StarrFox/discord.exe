@@ -190,6 +190,7 @@ class mod:
             except:
                 await ctx.send("Missing perms or invalid characters")
 
+'''Removed as part of the utils thing might add back and approve
     @commands.command()
     @checks.serverowner_or_permissions(manage_messages=True)
     async def mute(self, ctx, user: discord.Member, *, time: str = None):
@@ -239,6 +240,7 @@ class mod:
         await asyncio.sleep(time)
         await user.remove_roles(role)
         await ctx.send(f"{str(user)} unmuted")
+'''
 
 def setup(bot):
     bot.add_cog(mod(bot))
