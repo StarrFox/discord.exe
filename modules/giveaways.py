@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import asyncio
 from random import choice
+import humanize
+from datetime import datetime
 
 class giveaways:
     """Giveaway process and related comamnds"""
@@ -65,7 +67,8 @@ class giveaways:
         await self.giveaway_process(chanmsg, time, winnermsg, prizemsg)
 
     async def giveaway_process(self, channel, time, winners, prize):
-        e = discord.Embed(title=prize, description=f"React with <a:giveaway:526404437799862292> to enter\nEnding in {time} seconds")
+        humantime = humanize.naturaltime(datetime.utcfromtimestamp(datetime.utcnow().timestamp()+time))
+        e = discord.Embed(title=prize, description=f"React with <a:giveaway:526404437799862292> to enter\nEnding {humantime}")
         msg = await channel.send(embed=e)
         await msg.add_reaction('a:giveaway:526404437799862292')
         await asyncio.sleep(int(time))
@@ -88,7 +91,11 @@ class giveaways:
         winning_msg = ""
         for y in finalwinners:
             winning_msg += y.mention
-        q = discord.Embed(title="Giveaway ended", description=f"{winning_msg} are/is the winner(s)!!")
+        if winners == 1:
+            dex = f"{winning_msg} is the winner"
+        else:
+            dex = f"{winning_msg} are the winnders"
+        q = discord.Embed(title=prize, description=dex)
         await msg.edit(embed=q)
         await channel.send(f"Giveaway over, congratz {winning_msg}")
 
