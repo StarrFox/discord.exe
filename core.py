@@ -201,10 +201,13 @@ async def load_tags():
     for guild in bot.guilds:
         bot.tags[guild.id] = {}
     for item in fetch:
-        bot.tags[item[0]][item[1]] = {}
-        bot.tags[item[0]][item[1]]['content'] = item[2]
-        bot.tags[item[0]][item[1]]['uses'] = item[3]
-        bot.tags[item[0]][item[1]]['owner_id'] = item[4]
+        if item[0] in bot.tags:
+            bot.tags[item[0]][item[1]] = {}
+            bot.tags[item[0]][item[1]]['content'] = item[2]
+            bot.tags[item[0]][item[1]]['uses'] = item[3]
+            bot.tags[item[0]][item[1]]['owner_id'] = item[4]
+        else:
+            bot.tags.pop(item[0])
     print('Tags loaded')
 
 async def unload_tags():
