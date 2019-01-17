@@ -207,7 +207,7 @@ async def load_tags():
             bot.tags[item[0]][item[1]]['uses'] = item[3]
             bot.tags[item[0]][item[1]]['owner_id'] = item[4]
         else:
-            bot.tags.pop(item[0])
+            pass
     print('Tags loaded')
 
 async def unload_tags():
