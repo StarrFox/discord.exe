@@ -60,7 +60,7 @@ class special:
             dad = msg.content.clean_content
             for im in im_list:
                 dad = dad.replace(im, '')
-            await ctx.send(f"Hi {dad}, I'm dad!")
+            await msg.channel.send(f"Hi {dad}, I'm dad!")
 
     async def save(self):
         while True:
