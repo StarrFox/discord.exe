@@ -49,6 +49,19 @@ class special:
         m1 = await ctx.send(embed=e)
         self.lastview[ctx.message.channel.id].append(m1)
 
+    async def on_message(self, msg):
+        if not msg.guild.id == 533412083044450324:
+            return
+        im_list = [
+            "i'm",
+            "im"
+        ]
+        if msg.content.lower().split(" ")[0] in im_list:
+            dad = msg.content.clean_content
+            for im in im_list:
+                dad = dad.replace(im, '')
+            await ctx.send(f"Hi {dad}, I'm dad!")
+
     async def save(self):
         while True:
             with open('data/emote_list.json', 'w') as f:
