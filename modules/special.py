@@ -57,7 +57,7 @@ class special:
             "im"
         ]
         if msg.content.lower().split(" ")[0] in im_list:
-            dad = msg.content.clean_content
+            dad = msg.clean_content
             for im in im_list:
                 dad = dad.replace(im, '')
             await msg.channel.send(f"Hi {dad}, I'm dad!")
