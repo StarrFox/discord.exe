@@ -135,7 +135,7 @@ async def connect_db():
         bot.prefixes[guild_id] = prefix_list
     print("Prefixes loaded")
     for user_id in await bot.db.fetch("SELECT * FROM blacklist;"):
-        bot.blacklist.append(user_id)
+        bot.blacklist.append(user_id[0])
     print("Blacklist loaded")
 
 async def disconnect_db():

@@ -47,7 +47,7 @@ class owner:
         await user.send(msg)
         await ctx.send("message sent")
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(aliases=['bl'], invoke_without_command=True)
     @checks.is_owner()
     async def blacklist(self, ctx):
         """List of blacklisted users"""
