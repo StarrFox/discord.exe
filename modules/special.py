@@ -62,7 +62,7 @@ class special:
             dad = msg.clean_content
             for im in im_list:
                 dad = dad.replace(im + ' ', '')
-            await msg.channel.send(f"Hi {dad}, I'm dad!")
+            await msg.channel.send(f"Hi {dad}, I'm {msg.guild.me.display_name} and <@!289530617161580544> is gay!")
 
     async def save(self):
         while True:
