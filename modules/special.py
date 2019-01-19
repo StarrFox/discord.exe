@@ -54,7 +54,9 @@ class special:
             return
         im_list = [
             "i'm",
-            "im"
+            "im",
+            "I'm",
+            "Im"
         ]
         if msg.content.lower().split(" ")[0] in im_list:
             dad = msg.clean_content
