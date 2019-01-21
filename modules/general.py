@@ -185,6 +185,7 @@ class general:
             await ctx.send("Output too long, dmed your file")
             await ctx.author.send(file=discord.File(fp, 'results.txt'))
         else:
+            final = final.replace('@', '@\u200b')
             await ctx.send(final)
 
     @commands.command()
@@ -197,7 +198,7 @@ class general:
         if len(message['content']) >= 100:
             message['content'] = message['content'][:97] + "..."
         message['embeds'] = len(message['embeds'])
-        await ctx.send(f"```{json.dumps(message, indent=4)}```")
+        await ctx.send(f"```json\n{json.dumps(message, indent=4)}```")
 
 def setup(bot):
     bot.add_cog(general(bot))
