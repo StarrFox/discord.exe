@@ -61,7 +61,7 @@ class general:
         )
         e.add_field(
             name="Process time:"
-            value=f"{round(((datetime.utcnow()-ctx.message.created_at).total_seconds)*1000)}ms"
+            value=f"{round(((datetime.utcnow()-ctx.message.created_at).total_seconds())*1000)}ms"
         )
         await ctx.send(embed=e)
 
