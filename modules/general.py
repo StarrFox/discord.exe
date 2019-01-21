@@ -191,7 +191,7 @@ class general:
     async def msgraw(self, ctx, id: int):
         """Get the raw message data"""
         message = await self.bot.http.get_message(ctx.channel.id, id)
-        if len(message['content']) > 1000:
+        if len(message['content']) >= 500:
             message['content'] = message['content'][:997] + "..."
         await ctx.send(f"```{json.dumps(message, indent=4)}```")
 
