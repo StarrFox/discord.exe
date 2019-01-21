@@ -61,7 +61,7 @@ class general:
             value=f"{round(self.bot.latency*1000)}ms"
         )
         e.add_field(
-            name="Process time:"
+            name="Process time:",
             value=f"{process_time}ms"
         )
         await ctx.send(embed=e)
