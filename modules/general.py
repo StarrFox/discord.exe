@@ -6,6 +6,7 @@ import typing
 from bot_utils import checks
 import io
 from datetime import datetime
+import json
 
 class general:
 
@@ -185,6 +186,14 @@ class general:
             await ctx.author.send(file=discord.File(fp, 'results.txt'))
         else:
             await ctx.send(final)
+
+    @commands.command()
+    async def msgraw(self, ctx, id: int):
+        """Get the raw message data"""
+        message = await self.bot.http.get_message(ctx.channel.id, id)
+        if len(message['content']) > 1000:
+            message['content'] = message['content'][:997] + "..."
+        await ctx.send(f"```{json.dumps(message, indent=4)}```")
 
 def setup(bot):
     bot.add_cog(general(bot))
