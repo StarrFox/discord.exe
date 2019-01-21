@@ -71,6 +71,7 @@ async def _help(ctx, *, command: str = None):
 async def load_jsk(ctx):
     """Backup in case if failure"""
     bot.load_extension('jishaku')
+    await ctx.send("loaded jsk")
 
 @bot.event
 async def on_ready():

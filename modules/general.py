@@ -5,6 +5,7 @@ import async_cse
 import typing
 from bot_utils import checks
 import io
+from datetime import datetime
 
 class general:
 
@@ -50,10 +51,19 @@ class general:
 
     @commands.command()
     async def ping(self, ctx):
-        ping = self.bot.latency
-        ping = ping*1000
-        ping = ping//1
-        await ctx.send(str(ping) + "ms")
+        """Check bot ping and latency"""
+        e = discord.Embed(
+            color=discord.Color.dark_purple
+        )
+        e.add_field(
+            name="Latency:",
+            value=f"{round(self.bot.latency*1000)}ms"
+        )
+        e.add_field(
+            name="Process time:"
+            value=f"{round(((datetime.utcnow()-ctx.message.created_at).total_seconds)*1000)}ms"
+        )
+        await ctx.send(embed=e)
 
     @commands.command()
     async def invite(self, ctx):
