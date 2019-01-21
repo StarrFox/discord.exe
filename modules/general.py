@@ -52,6 +52,7 @@ class general:
     @commands.command()
     async def ping(self, ctx):
         """Check bot ping and latency"""
+        process_time = round(((datetime.utcnow()-_ctx.message.created_at).total_seconds())*1000)
         e = discord.Embed(
             color=discord.Color.dark_purple
         )
@@ -61,7 +62,7 @@ class general:
         )
         e.add_field(
             name="Process time:"
-            value=f"{round(((datetime.utcnow()-ctx.message.created_at).total_seconds())*1000)}ms"
+            value=f"{process_time}ms"
         )
         await ctx.send(embed=e)
 
