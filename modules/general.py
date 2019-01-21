@@ -57,13 +57,15 @@ class general:
             color=discord.Color.dark_purple()
         )
         e.add_field(
-            name="Latency:",
+            name="**Latency:**",
             value=f"{round(self.bot.latency*1000)}ms"
         )
         e.add_field(
-            name="Process time:",
-            value=f"{process_time}ms"
+            name="**Process time:**",
+            value=f"{process_time}ms",
+            inline=False
         )
+        e.set_thumbnail(url=ctx.me.avatar_url)
         await ctx.send(embed=e)
 
     @commands.command()
