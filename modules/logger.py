@@ -14,6 +14,7 @@ class logger:
         self.pm_logs = self.bot.get_channel(521116687437791233)
         self.command_logs = self.bot.get_channel(531494671600451664)
         self.error_logs = self.bot.get_channel(531497184781139968)
+        self.command_react = "check:536871997943316501"
 
     async def on_guild_join(self, guild):
         e = discord.Embed(title="Guild add", color=discord.Color.dark_purple())
@@ -49,6 +50,7 @@ class logger:
         e.add_field(name="Content:", value=ctx.message.content)
         try:
             await self.command_logs.send(embed=e)
+            await ctx.message.add_reaction(self.command_react)
         except Exception as exe:
             await self.command_logs.send("Error in command_complete")
             await self.error_logs.send(exe)

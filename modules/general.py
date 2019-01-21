@@ -54,7 +54,7 @@ class general:
         """Check bot ping and latency"""
         process_time = round(((datetime.utcnow()-ctx.message.created_at).total_seconds())*1000)
         e = discord.Embed(
-            color=discord.Color.dark_purple
+            color=discord.Color.dark_purple()
         )
         e.add_field(
             name="Latency:",
