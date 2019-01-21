@@ -220,9 +220,9 @@ class mod:
         except:
             return None
         overwrite = discord.PermissionOverwrite()
-        overwrite.send_messages = False
-        overwrite.add_reactions = False
-        overwrite.connect = False
+        overwrite.send_messages = False #pylint: disable=E0237
+        overwrite.add_reactions = False #pylint: disable=E0237
+        overwrite.connect = False #pylint: disable=E0237
         for channel in guild.channels:
             try:
                 await channel.set_permissions(target=role, overwrite=overwrite)

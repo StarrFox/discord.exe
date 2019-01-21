@@ -195,11 +195,10 @@ class general:
             message = await self.bot.http.get_message(ctx.channel.id, id)
         except:
             return await ctx.send("Invalid message id")
-        message['content'] = message['content'].replace('`', '')
         if len(message['content']) >= 100:
             message['content'] = message['content'][:97] + "..."
         message['embeds'] = len(message['embeds'])
-        await ctx.send(f"```json\n{json.dumps(message, indent=4)}```")
+        await ctx.send(f"```json\n{json.dumps(message, indent=4).replace("``", "`\u200b``")}```")
 
 def setup(bot):
     bot.add_cog(general(bot))
