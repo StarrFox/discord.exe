@@ -195,6 +195,8 @@ class general:
             message = await self.bot.http.get_message(ctx.channel.id, id)
         except:
             return await ctx.send("Invalid message id")
+        message['content'] = message['content'].replace('@', '@\u200b')
+        message['content'] = message['content'].replace('`', '`\u200b')
         if len(message['content']) >= 100:
             message['content'] = message['content'][:97] + "..."
         message['embeds'] = len(message['embeds'])
