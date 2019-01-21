@@ -192,7 +192,7 @@ class general:
         """Get the raw message data"""
         message = await self.bot.http.get_message(ctx.channel.id, id)
         if len(message['content']) >= 500:
-            message['content'] = message['content'][:997] + "..."
+            message['content'] = message['content'][:497] + "..."
         await ctx.send(f"```{json.dumps(message, indent=4)}```")
 
 def setup(bot):
