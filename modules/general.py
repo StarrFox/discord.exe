@@ -196,6 +196,7 @@ class general:
             return await ctx.send("Invalid message id")
         if len(message['content']) >= 100:
             message['content'] = message['content'][:97] + "..."
+        message['embeds'] = len(message['embeds'])
         await ctx.send(f"```{json.dumps(message, indent=4)}```")
 
 def setup(bot):
