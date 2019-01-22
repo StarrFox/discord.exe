@@ -17,7 +17,7 @@ class snipe:
             self.snipe_dict[msg.channel.id] = []
         self.snipe_dict[msg.channel.id].insert(0, msg)
 
-    @commands.command(name='snipe')
+    @commands.group(name='snipe', invoke_without_command=True)
     async def _snipe(self, ctx, channel: typing.Optional[discord.TextChannel] = None, index: int = 0):
         """Snipe a command deleted in a channel"""
         if index < 0:
@@ -41,6 +41,29 @@ class snipe:
             text=f"{index}/{len(self.snipe_dict[channel.id])-1}"
         )
         await ctx.send(embed=e)
+
+    @_snipe.command(name='list')
+    async def _list(self, ctx, channel: discord.TextChannel = None):
+        """List last 5 deleted messages in a channel"""
+        if not channel:
+            channel = ctx.channel
+        if not channel in self.snipe_dict:
+            return await ctx.send("This channel has no recorded messages")
+        e = discord.Embed(
+            color=discord.Color.dark_purple()
+        )
+        for num in range(5):
+            try:
+                msg = self.snipe_dict[channel.id][num-1]
+                e.add_field(
+                    name=f"{msg.author.display_name} said in {msg.channel.mention}",
+                    value=msg.content[:100]
+                )
+            except:
+                pass
+        await ctx.send(embed=e)
+
+
 
 def setup(bot):
     bot.add_cog(snipe(bot))
