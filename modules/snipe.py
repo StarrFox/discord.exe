@@ -56,8 +56,9 @@ class snipe:
             try:
                 msg = self.snipe_dict[channel.id][num-1]
                 e.add_field(
-                    name=f"{msg.author.display_name} said in {msg.channel.mention}",
-                    value=msg.content[:100]
+                    name=f"{msg.author.display_name} said in #{msg.channel.name}",
+                    value=msg.content[:100],
+                    inline=False
                 )
             except:
                 pass
