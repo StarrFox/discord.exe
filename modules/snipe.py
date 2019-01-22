@@ -26,7 +26,7 @@ class snipe:
             channel = ctx.channel
         if not channel.id in self.snipe_dict:
             return await ctx.send("This channel has no recorded messages")
-        if len(self.snipe_dict)-1 < index:
+        if len(self.snipe_dict[channel.id])-1 < index:
             return await ctx.send("I don't have that many messages recorded")
         msg = self.snipe_dict[channel.id][index]
         e = discord.Embed(
