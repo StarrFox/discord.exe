@@ -54,9 +54,9 @@ class snipe:
         )
         for num in range(5):
             try:
-                msg = self.snipe_dict[channel.id][num-1]
+                msg = self.snipe_dict[channel.id][num]
                 e.add_field(
-                    name=f"{msg.author.display_name} said in #{msg.channel.name}",
+                    name=f"**{msg.author.display_name}** said in **#{msg.channel.name}**",
                     value=msg.content[:100],
                     inline=False
                 )
