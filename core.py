@@ -148,7 +148,8 @@ async def disconnect_db():
     await bot.db.execute("DELETE FROM blacklist;")
     bl_los = []
     for i in bot.blacklist:
-        bl_los.append(tuple(i))
+        tupe = (i)
+        bl_los.append(tupe)
     await bot.db.executemany("INSERT INTO blacklist VALUES($1)", bl_los)
     print("Blacklist unloaded")
     await bot.db.close()
