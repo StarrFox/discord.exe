@@ -47,7 +47,7 @@ class snipe:
         """List last 5 deleted messages in a channel"""
         if not channel:
             channel = ctx.channel
-        if not channel in self.snipe_dict:
+        if not channel.id in self.snipe_dict:
             return await ctx.send("This channel has no recorded messages")
         e = discord.Embed(
             color=discord.Color.dark_purple()
