@@ -15,7 +15,7 @@ class snipe:
             return
         if not msg.channel.id in self.snipe_dict:
             self.snipe_dict[msg.channel.id] = []
-        self.snipe_dict[msg.channel.id].append(msg)
+        self.snipe_dict[msg.channel.id].insert(0, msg)
 
     @commands.command(name='snipe')
     async def _snipe(self, ctx, channel: typing.Optional[discord.TextChannel] = None, index: int = 0):
@@ -38,7 +38,7 @@ class snipe:
             icon_url=msg.author.avatar_url
         )
         e.set_footer(
-            text=f"{index}/{len(self.snipe_dict[channel.id])}"
+            text=f"{index}/{len(self.snipe_dict[channel.id])-1}"
         )
         await ctx.send(embed=e)
 
