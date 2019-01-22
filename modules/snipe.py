@@ -64,7 +64,5 @@ class snipe:
                 pass
         await ctx.send(embed=e)
 
-
-
 def setup(bot):
     bot.add_cog(snipe(bot))
