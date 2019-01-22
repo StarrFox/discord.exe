@@ -198,7 +198,9 @@ class general:
         if len(message['content']) >= 100:
             message['content'] = message['content'][:97] + "..."
         message['embeds'] = len(message['embeds'])
-        await ctx.send(f"```json\n{json.dumps(message, indent=4).replace("``", "`\u200b``")}```")
+        json_msg = json.dumps(message, indent=4)
+        json_msg = json_msg.replace("``", "`\u200b``")
+        await ctx.send(f"```json\n{json_msg}```")
 
 def setup(bot):
     bot.add_cog(general(bot))
