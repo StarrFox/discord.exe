@@ -146,7 +146,10 @@ async def disconnect_db():
     await bot.db.executemany("INSERT INTO prefixes(guild_id, prefix_list) VALUES ($1, $2)", bot.prefixes.items())
     print("Prefixes unloaded")
     await bot.db.execute("DELETE FROM blacklist;")
-    await bot.db.executemany("INSERT INTO blacklist VALUES($1)", set(bot.blacklist))
+    bl_los = []
+    for i in bot.blacklist:
+        bl_los.append(tuple(i))
+    await bot.db.executemany("INSERT INTO blacklist VALUES($1)", bl_los)
     print("Blacklist unloaded")
     await bot.db.close()
     print("Database unloaded")
