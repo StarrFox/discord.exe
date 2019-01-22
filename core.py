@@ -136,7 +136,7 @@ async def connect_db():
         bot.prefixes[guild_id] = prefix_list
     print("Prefixes loaded")
     for user_id in await bot.db.fetch("SELECT * FROM blacklist;"):
-        bot.blacklist.append(user_id[0])
+        bot.blacklist.append(int(user_id[0]))
     print("Blacklist loaded")
 
 async def disconnect_db():
@@ -148,6 +148,7 @@ async def disconnect_db():
     await bot.db.execute("DELETE FROM blacklist;")
     bl_los = []
     for i in bot.blacklist:
+        i = str(i)
         tupe = (i)
         bl_los.append(tupe)
     await bot.db.executemany("INSERT INTO blacklist VALUES($1)", bl_los)
