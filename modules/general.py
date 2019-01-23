@@ -15,7 +15,7 @@ class general:
     def __init__(self, bot):
         self.bot = bot
         self.unsplash_api = None
-        await self.unsplash
+        self.bot.loop.create_task(self.unsplash())
 
     @commands.command()
     async def pyramid(self, ctx, *, msg: commands.clean_content()):
