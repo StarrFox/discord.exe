@@ -160,9 +160,9 @@ class general:
     async def unsplash(self):
         """Sets up Unsplash api for use
         within the bot"""
-        client_id = self.bot.settings['client_id']
-        client_secret = self.bot.settings['client_secret']
-        redirect_uri = self.bot.settings['redirect_url']
+        client_id = self.bot.settings['access_key']
+        client_secret = self.bot.settings['secret_key']
+        redirect_uri = self.bot.settings['redirect']
         code = self.bot.settings['code']
         auth = Auth(client_id, client_secret, redirect_uri, code=code)
         self.unsplash_api = Api(auth)
