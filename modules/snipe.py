@@ -27,9 +27,9 @@ class snipe:
         ]
         if any(checks):
             return
-        if not after.channel.id in self.snipe_dict:
-            self.snipe_dict[after.channel.id] = []
-        self.snipe_dict[after.channel.id].insert(0, after)
+        if not before.channel.id in self.snipe_dict:
+            self.snipe_dict[before.channel.id] = []
+        self.snipe_dict[before.channel.id].insert(0, before)
 
     @commands.group(name='snipe', invoke_without_command=True)
     async def _snipe(self, ctx, channel: typing.Optional[discord.TextChannel] = None, index: int = 0):
