@@ -7,15 +7,15 @@ from bot_utils import checks
 import io
 from datetime import datetime
 import json
-from unspash.api import Api
-from unspash.auth import Auth
+from unsplash.api import Api
+from unsplash.auth import Auth
 
 class general:
 
     def __init__(self, bot):
         self.bot = bot
-        self.unspash_api = None
-        await self.unspash
+        self.unsplash_api = None
+        await self.unsplash
 
     @commands.command()
     async def pyramid(self, ctx, *, msg: commands.clean_content()):
@@ -154,18 +154,18 @@ class general:
 
     @commands.command()
     async def image(self, ctx, *, search: str):
-        """Search Unspash for an image"""
+        """Search Unsplash for an image"""
         return
 
-    async def unspash(self):
-        """Sets up Unspash api for use
+    async def unsplash(self):
+        """Sets up Unsplash api for use
         within the bot"""
         client_id = self.bot.settings['client_id']
         client_secret = self.bot.settings['client_secret']
         redirect_uri = self.bot.settings['redirect_url']
         code = self.bot.settings['code']
         auth = Auth(client_id, client_secret, redirect_uri, code=code)
-        self.unspash_api = Api(auth)
+        self.unsplash_api = Api(auth)
 
 def setup(bot):
     bot.add_cog(general(bot))
