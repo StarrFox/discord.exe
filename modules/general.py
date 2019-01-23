@@ -7,11 +7,15 @@ from bot_utils import checks
 import io
 from datetime import datetime
 import json
+from unspash.api import Api
+from unspash.auth import Auth
 
 class general:
 
     def __init__(self, bot):
         self.bot = bot
+        self.unspash_api = None
+        await self.unspash
 
     @commands.command()
     async def pyramid(self, ctx, *, msg: commands.clean_content()):
@@ -77,7 +81,7 @@ class general:
         message = f"**With perms:**\n<{invite8}>\n**Without perms (some things may not work):**\n<{invite0}>"
         await ctx.send(message)
 
-    @commands.group(aliases=['g'], invoke_without_command=True)
+    @commands.command(aliases=['g'])
     async def google(self, ctx, *, entry: str):
         """Google something"""
         apikey = self.bot.settings['google_key']
@@ -93,60 +97,6 @@ class general:
         e.add_field(name=results[4].title, value=f"[{results[4].description}]({results[4].url})")
         e.set_author(name="Results from Google", url="https://www.google.com", icon_url=googlelogo)
         await ctx.send(embed=e)
-
-    @google.command(aliases=['i'])
-    async def image(self, ctx, *, entry: str):
-        """Google for images"""
-        apikey = self.bot.settings['google_key']
-        search = async_cse.search.Search(apikey)
-        results = await search.search(entry, safesearch=True, image_search=True)
-        await search.session.close()
-        pages = []
-        for i in results:
-            pages.append(i.image_url)
-        e = discord.Embed()
-        e.set_image(url=pages[0])
-        msg = await ctx.send(embed=e)
-        await self.gimage(ctx, pages, msg, 0)
-
-    async def gimage(self, ctx, pages, msg, page):
-        arrow_left = "\u25c0"
-        arrow_right = "\u25b6"
-        await msg.add_reaction(arrow_left)
-        await msg.add_reaction(arrow_right)
-        def check(r, u):
-            if r.message.id == msg.id and str(r.emoji) in [arrow_left, arrow_right] and u.id == ctx.message.author.id:
-                return True
-            else:
-                return False
-        try:
-            reaction, user = await self.bot.wait_for('reaction_add', check=check, timeout=120)
-        except:
-            try:
-                await msg.clear_reactions()
-            except:
-                pass
-            return
-        if reaction.emoji == arrow_left:
-            page -= 1
-            try:
-                await msg.remove_reaction(arrow_left, user)
-            except:
-                pass
-        else:
-            page += 1
-            try:
-                await msg.remove_reaction(arrow_right, user)
-            except:
-                pass
-        if page == 0:
-            page += 1
-        if page == 10:
-            page -= 1
-        e = discord.Embed()
-        e.set_image(url=pages[page])
-        await msg.edit(embed=e)
-        await self.gimage(ctx, pages, msg, page)
 
     @commands.command(aliases=['msg'])
     @checks.serverowner_or_permissions(administrator=True)
@@ -201,6 +151,21 @@ class general:
         json_msg = json.dumps(message, indent=4)
         json_msg = json_msg.replace("``", "`\u200b``")
         await ctx.send(f"```json\n{json_msg}```")
+
+    @commands.command()
+    async def image(self, ctx, *, search: str):
+        """Search Unspash for an image"""
+        return
+
+    async def unspash(self):
+        """Sets up Unspash api for use
+        within the bot"""
+        client_id = self.bot.settings['client_id']
+        client_secret = self.bot.settings['client_secret']
+        redirect_uri = self.bot.settings['redirect_url']
+        code = self.bot.settings['code']
+        auth = Auth(client_id, client_secret, redirect_uri, code=code)
+        self.unspash_api = Api(auth)
 
 def setup(bot):
     bot.add_cog(general(bot))
