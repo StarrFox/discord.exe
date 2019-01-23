@@ -7,15 +7,11 @@ from bot_utils import checks
 import io
 from datetime import datetime
 import json
-from unsplash.api import Api
-from unsplash.auth import Auth
 
 class general:
 
     def __init__(self, bot):
         self.bot = bot
-        self.unsplash_api = None
-        self.bot.loop.create_task(self.unsplash())
 
     @commands.command()
     async def pyramid(self, ctx, *, msg: commands.clean_content()):
@@ -151,21 +147,6 @@ class general:
         json_msg = json.dumps(message, indent=4)
         json_msg = json_msg.replace("``", "`\u200b``")
         await ctx.send(f"```json\n{json_msg}```")
-
-    @commands.command()
-    async def image(self, ctx, *, search: str):
-        """Search Unsplash for an image"""
-        return
-
-    async def unsplash(self):
-        """Sets up Unsplash api for use
-        within the bot"""
-        client_id = self.bot.settings['access_key']
-        client_secret = self.bot.settings['secret_key']
-        redirect_uri = self.bot.settings['redirect']
-        code = self.bot.settings['code']
-        auth = Auth(client_id, client_secret, redirect_uri, code=code)
-        self.unsplash_api = Api(auth)
 
 def setup(bot):
     bot.add_cog(general(bot))
