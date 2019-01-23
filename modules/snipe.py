@@ -10,16 +10,30 @@ class snipe:
         self.snipe_dict = {}
 
     async def on_message_delete(self, msg):
-        """Saves message to snipe dict"""
+        """Saves deleted messages to snipe dict"""
         if not msg.content:
             return
         if not msg.channel.id in self.snipe_dict:
             self.snipe_dict[msg.channel.id] = []
         self.snipe_dict[msg.channel.id].insert(0, msg)
 
+    async def on_message_edit(self, before, after):
+        """Saves edited messages to snipe dict"""
+        checks = [
+            before.content == after.content,
+            before.attachments == after.attachments and before.content == after.content,
+            before.embeds == after.embeds and before.content == after.content,
+            not after.content
+        ]
+        if any(checks):
+            return
+        if not after.channel.id in self.snipe_dict:
+            self.snipe_dict[after.channel.id] = []
+        self.snipe_dict[after.channel.id].insert(0, after)
+
     @commands.group(name='snipe', invoke_without_command=True)
     async def _snipe(self, ctx, channel: typing.Optional[discord.TextChannel] = None, index: int = 0):
-        """Snipe a command deleted in a channel"""
+        """Snipe messages deleted/edited in a channel"""
         if index < 0:
             return await ctx.send("Positive numbers only")
         if not channel:
