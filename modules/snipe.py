@@ -76,7 +76,7 @@ class snipe:
             else:
                 e.add_field(
                     name=f"**{msg.author.display_name}** said in **#{msg.channel.name}**",
-                    value=msg.content,
+                    value=msg.content[:100],
                     inline=False
                 )
         e.set_footer(text=f"{Set*5-4}-{Set*5}/{len(self.snipe_dict[channel.id])-1}")
