@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import typing
+from bot_utils.paginator import paginator
 
 class snipe:
 
@@ -21,9 +22,9 @@ class snipe:
         """Saves edited messages to snipe dict"""
         checks = [
             before.content == after.content,
-            before.attachments == after.attachments and before.content == after.content,
-            before.embeds == after.embeds and before.content == after.content,
-            not after.content
+            before.embeds != after.embeds and before.content == after.content,
+            not after.content,
+            before.pinned != after.pinned
         ]
         if any(checks):
             return
@@ -63,20 +64,23 @@ class snipe:
             channel = ctx.channel
         if not channel.id in self.snipe_dict:
             return await ctx.send("This channel has no recorded messages")
-        e = discord.Embed(
-            color=discord.Color.dark_purple()
-        )
-        for num in range(5):
-            try:
-                msg = self.snipe_dict[channel.id][num]
+        pager = paginator(self.bot)
+        e = discord.Embed()
+        Set = 1
+        for msg in self.snipe_dict[channel.id]:
+            if len(e.fields) >= 5:
+                e.set_footer(text=f"{Set*5-4}-{Set*5}/{len(self.snipe_dict[channel.id])}")
+                Set += 1
+                pager.add_page(data=e)
+                e = discord.Embed()
+            else:
                 e.add_field(
                     name=f"**{msg.author.display_name}** said in **#{msg.channel.name}**",
-                    value=msg.content[:100],
-                    inline=False
+                    value=msg.content
                 )
-            except:
-                pass
-        await ctx.send(embed=e)
+        e.set_footer(text=f"{Set*5-4}-{Set*5}/{len(self.snipe_dict[channel.id])}")
+        pager.add_page(data=e)
+        await pager.do_paginator(ctx)
 
 def setup(bot):
     bot.add_cog(snipe(bot))
